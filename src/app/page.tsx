@@ -1,5 +1,5 @@
 'use client'
-import DialogModal from '@/components/DialogModal'
+import SignupModal from '@/components/SignupModal'
 import { useContext, useState } from 'react'
 import { NavBarContext } from '@/contexts/NavBarContext'
 
@@ -7,21 +7,19 @@ export default function Home() {
   const context = useContext(NavBarContext)
   const [showSignUp, setShowSignUp] = useState(false)
 
-  context.signupRequested = () => {
-    setShowSignUp(!showSignUp)
-    console.log('Signup was requested, from the nav bar!')
-  }
+  context.signupRequested = () => setShowSignUp(true)
 
   return (
     <main>
-      <DialogModal show={showSignUp}>
-        <div>Showing the modal!</div>
-      </DialogModal>
-
+      { /* Keep this as the first element to prevent layout issues! */}
+      <SignupModal show={showSignUp}
+                   onDismiss={() => setShowSignUp(false)}
+                   onSubmit={(details) => {
+                     console.log('User signed up with:', details)
+                     setShowSignUp(false)
+                   }}/>
       <div>
       </div>
-
-
     </main>
   )
 }
