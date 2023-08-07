@@ -1,5 +1,12 @@
+import NavBar from '@/components/NavBar'
+
 export default function Home() {
   return (
-    <main>Best game ever</main>
+    <main className={''}>
+      <div>
+      </div>
+
+
+    </main>
   )
 }
