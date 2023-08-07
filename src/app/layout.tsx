@@ -1,5 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import React from 'react'
 
 
 export const metadata: Metadata = {
@@ -7,14 +8,14 @@ export const metadata: Metadata = {
   description: 'Best game ever',
 }
 
-export default function RootLayout({
-                                     children,
-                                   }: {
+export type RootLayoutProps = {
   children: React.ReactNode
-}) {
+}
+
+export default function RootLayout(props: RootLayoutProps) {
   return (
     <html lang="en">
-    <body>{children}</body>
+    <body>{props.children}</body>
     </html>
   )
 }
