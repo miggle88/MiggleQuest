@@ -1,11 +1,11 @@
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
 export type ConditionalProps = {
   condition: boolean | (() => boolean)
   children: ReactNode
 }
 
-function Conditional (props: ConditionalProps) {
+function Conditional(props: ConditionalProps) {
   const shouldShow = typeof props.condition === 'function'
     ? props.condition()
     : props.condition
