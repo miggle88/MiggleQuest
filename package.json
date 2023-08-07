@@ -28,6 +28,8 @@
     "lint-staged": "^13.2.3"
   },
   "lint-staged": {
-    "*.(ts|.tsx)": [ "eslint" ]
+    "*.ts": [ "eslint" ],
+    "*.tsx": [ "eslint" ],
+    "*.css": [ "eslint" ]
   }
 }
