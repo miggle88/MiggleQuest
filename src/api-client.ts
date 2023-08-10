@@ -11,10 +11,10 @@ export async function loginToAccount(data: LoginRequest): Promise<ApiResponse<Lo
   return makeApiCall('login', data, 'POST')
 }
 
-export async function makeApiCall<TRequest, TResponse>(url: string, data: TRequest, method: HttpMethod = 'GET'): Promise<ApiResponse<TResponse>> {
+export async function makeApiCall<TRequest, TResponse>(url: string, data?: TRequest, method: HttpMethod = 'GET'): Promise<ApiResponse<TResponse>> {
   const res = await fetch(`${BASE_PATH}/${url}`, {
     method,
-    body: JSON.stringify(data),
+    body: data ? JSON.stringify(data) : undefined,
   })
 
   return {

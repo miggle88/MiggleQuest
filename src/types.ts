@@ -1,6 +1,8 @@
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-export type ApiResponse<TData, TError = ApiError> = {
+export type AnyObject = Record<string, any>
+
+export type ApiResponse<TData = AnyObject, TError = ApiError> = {
   status: number
   ok: boolean,
   data: TData | null
