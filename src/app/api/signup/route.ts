@@ -38,9 +38,10 @@ export async function POST(request: Request) {
   if (!result.success) {
     const validationMessage = formatZodError(result.error)
     return NextResponse.json({
-      message: validationMessage,
-      errors: result.error.errors,
-    }, { status: 400 })
+        message: validationMessage,
+        errors: result.error.errors,
+      },
+      { status: 400 })
   }
 
   const fields = result.data
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
 
   if (existingAccount) {
     return NextResponse.json({
-        errorMessage: 'User name is already in use',
+        message: 'User name is already in use',
       },
       { status: 400 })
   }

@@ -9,6 +9,11 @@ export type ApiError = {
   message: string
 }
 
+export type UserToken = {
+  id: number
+  username: string
+}
+
 export type SignupRequest = {
   username: string
   displayName: string
