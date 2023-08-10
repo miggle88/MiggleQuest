@@ -1,3 +1,5 @@
+import exp from 'constants'
+
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export type AnyObject = Record<string, any>
@@ -37,5 +39,31 @@ export type UserAccount = {
   emailAddress: string
   createdAt: Date,
   updatedAt: Date
+}
+
+export enum HeroClass {
+  Fighter = 'FIGHTER',
+  Rogue = 'ROGUE',
+  Wizard = 'WIZARD',
+  Cleric = 'CLERIC'
+}
+
+export type HeroCharacter = {
+  id: number
+  accountId: number,
+  icon?: string
+  flavorText?: string
+  characterName: string
+  level: number
+  class: HeroClass
+  experience: number
+  isAlive: boolean
+  strength: number
+  dexterity: number
+  intelligence: number
+  constitution: number
+  hitPoints: number
+  hiredAt: Date
+  diedAt?: Date
 }
 

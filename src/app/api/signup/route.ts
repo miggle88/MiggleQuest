@@ -4,7 +4,9 @@ import { hashPasswordAsync } from '@/helpers/bcrypt'
 import { z } from 'zod'
 import validateRequest from '@/middlewares/validate-request'
 import { formatZodError } from '@/helpers/zod-errors'
-import { SignupRequest } from '@/types'
+import { HeroClass, SignupRequest } from '@/types'
+import { heroTemplates } from '@/data/hero-templates'
+import { generateHeroName } from '@/data/name-generator'
 
 const USERNAME_REGEX = /^[0-9a-z]+$/i
 
@@ -67,6 +69,24 @@ export async function POST(request: Request) {
       emailAddress: fields.emailAddress,
       passwordHash: hash,
     },
+  })
+
+  // Create the starting heroes for each account
+  const heroOverrides = {
+    id: undefined,
+    accountId: newAccount.id,
+    hiredAt: new Date(),
+  }
+
+  const startingCharacters = [
+    { ...heroTemplates.fighter({ characterName: generateHeroName(HeroClass.Fighter), ...heroOverrides }) },
+    { ...heroTemplates.rogue({ characterName: generateHeroName(HeroClass.Rogue), ...heroOverrides }) },
+    { ...heroTemplates.wizard({ characterName: generateHeroName(HeroClass.Wizard), ...heroOverrides }) },
+    { ...heroTemplates.cleric({ characterName: generateHeroName(HeroClass.Cleric), ...heroOverrides }) },
+  ]
+
+  await prisma.hero.createMany({
+    data: startingCharacters,
   })
 
   // Pull the password hash out, so we don't return it in the JSON
