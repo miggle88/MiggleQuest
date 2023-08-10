@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
+    "vercel-build": "prisma generate && prisma db push && next build",
     "prisma:generate": "prisma generate",
+    "prisma:pull": "prisma db pull",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio"
   },
