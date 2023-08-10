@@ -17,32 +17,21 @@ export async function makeApiCall<TRequest, TResponse>(url: string, data?: TRequ
     body: data ? JSON.stringify(data) : undefined,
   })
 
+  const body = await res.json()
+
+  if (res.ok) {
+    return {
+      status: res.status,
+      ok: true,
+      data: body as TResponse,
+    }
+  }
+
   return {
     status: res.status,
-    ok: res.ok,
-    data: await dataFromResponse(res),
-    error: await apiErrorFromResponse(res),
-  }
-}
-
-async function dataFromResponse<TData>(res: Response): Promise<TData | null> {
-  // If not OK status, no data so return null
-  if (!res.ok) {
-    return null
-  }
-
-  const body = await res.json()
-  return body as TData
-}
-
-async function apiErrorFromResponse(res: Response): Promise<ApiError | null> {
-  // If OK status, no error so return null
-  if (res.ok) {
-    return null
-  }
-
-  const body = await res.json()
-  return {
-    message: body.errorMessage ?? 'An error has occurred',
+    ok: false,
+    error: {
+      message: body.message ?? 'An unknown error has occurred',
+    },
   }
 }

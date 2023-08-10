@@ -32,10 +32,10 @@ export default function SignupModal(props: DialogModalProps) {
         setSignupError('')
 
 
-        props.onSuccess && props.onSuccess(res.data!)
+        props.onSuccess && props.onSuccess(res.data)
       } else {
-        setSignupError(res.error!.message)
-        props.onError && props.onError(res.error!)
+        setSignupError(res.error.message)
+        props.onError && props.onError(res.error)
       }
     },
   })

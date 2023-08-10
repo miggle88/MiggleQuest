@@ -1,51 +1,52 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/db'
-import { SignupRequest } from '@/types'
 import { hashPasswordAsync } from '@/bcrypt'
+import { z } from 'zod'
+import validateRequest from '@/middlewares/validate-request'
+import { formatZodError } from '@/helpers/zod-errors'
+import { SignupRequest } from '@/types'
+
+const USERNAME_REGEX = /^[0-9a-z]+$/i
+
+const bodySchema = z.object({
+  username: z.string()
+    .regex(USERNAME_REGEX, 'Username can only contain alphanumeric characters')
+    .min(4)
+    .max(20)
+    .trim()
+    .toLowerCase(),
+
+  displayName: z.string()
+    .min(4)
+    .max(20)
+    .trim(),
+
+  emailAddress: z.string()
+    .email()
+    .max(100)
+    .trim(),
+
+  password: z.string()
+    .min(8)
+    .max(20),
+
+})
 
 export async function POST(request: Request) {
-  const body = await request.json()
-  const fields = body as SignupRequest
-
-  // Validate that username is not null or empty
-  if (!fields.username?.trim()) {
+  // Validate the body schema, throw 400 error if it's not valid
+  const result = await validateRequest<SignupRequest>(request, bodySchema)
+  if (!result.success) {
+    const validationMessage = formatZodError(result.error)
     return NextResponse.json({
-        errorMessage: 'Invalid user name',
-      },
-      { status: 400 })
-  }
-  // Validate that display name is not null or empty
-  if (!fields.displayName?.trim()) {
-    return NextResponse.json({
-        errorMessage: 'Invalid display name',
-      },
-      { status: 400 })
-  }
-  // Validate that email address is not null or empty
-  if (!fields.emailAddress?.trim()) {
-    return NextResponse.json({
-        errorMessage: 'Invalid email address',
-      },
-      { status: 400 })
-  }
-  // Validate that password is not null or empty
-  if (!fields.password?.trim()) {
-    return NextResponse.json({
-        errorMessage: 'Invalid password',
-      },
-      { status: 400 })
-  }
-  // Validate that the password is at least characters long
-  if (fields.password.length < 8) {
-    return NextResponse.json({
-        errorMessage: 'Password must be at least 8 characters long',
-      },
-      { status: 400 })
+      message: validationMessage,
+      errors: result.error.errors,
+    }, { status: 400 })
   }
 
-  const trimmedUsername = fields.username.trim()
+  const fields = result.data
+
   const existingAccount = await prisma.account.findUnique({
-    where: { username: trimmedUsername },
+    where: { username: fields.username },
   })
 
   if (existingAccount) {
@@ -53,7 +54,6 @@ export async function POST(request: Request) {
         errorMessage: 'User name is already in use',
       },
       { status: 400 })
-
   }
 
   // Calculate the bcrypt hash of the password to store
@@ -61,9 +61,9 @@ export async function POST(request: Request) {
 
   const newAccount = await prisma.account.create({
     data: {
-      username: trimmedUsername,
-      displayName: fields.displayName.trim(),
-      emailAddress: fields.emailAddress.trim(),
+      username: fields.username,
+      displayName: fields.displayName,
+      emailAddress: fields.emailAddress,
       passwordHash: hash,
     },
   })
