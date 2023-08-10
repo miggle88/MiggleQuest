@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/db'
-import { hashPasswordAsync } from '@/bcrypt'
+import { hashPasswordAsync } from '@/helpers/bcrypt'
 import { z } from 'zod'
 import validateRequest from '@/middlewares/validate-request'
 import { formatZodError } from '@/helpers/zod-errors'

@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 
 export type NavBarContextProps = {
-  signupRequested?: () => void
+  loginRequested?: () => void
 }
 
 export const NavBarContext = createContext<NavBarContextProps>({})

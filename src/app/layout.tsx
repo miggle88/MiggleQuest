@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import React from 'react'
 import Providers from '@/app/providers'
-import NavLayout from '@/components/NavLayout'
+import NavLayout from '@/components/navigation/NavLayout'
 
 export const metadata: Metadata = {
   title: 'MiggleQuest',
