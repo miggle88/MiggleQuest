@@ -1,10 +1,10 @@
 import { compare, hash } from 'bcryptjs'
 
-const SALT_ROUNDS = 10
+const SALT_VALUE = 'Fl3qWTJeJN'
 
 export function hashPasswordAsync(password: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    hash(password, SALT_ROUNDS, (err, hash) => {
+    hash(password, SALT_VALUE, (err, hash) => {
       if (err) {
         return reject(err)
       }

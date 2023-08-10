@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/db'
 import { SignupRequest } from '@/types'
-import { next } from 'sucrase/dist/types/parser/tokenizer'
 import { hashPasswordAsync } from '@/bcrypt'
 
 export async function POST(request: Request) {
