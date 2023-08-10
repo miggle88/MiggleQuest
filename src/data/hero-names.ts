@@ -29,6 +29,4 @@ export const lastNames: string[] = [
   'Axecloud',
   'Spidershard',
   'Greenash',
-
-
 ]
