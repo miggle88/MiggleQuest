@@ -18,6 +18,7 @@ export default function SignupModal(props: DialogModalProps) {
   const [displayName, setDisplayName] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
   const [password, setPassword] = useState('')
+  const [signUpError, setSignupError] = useState('')
 
   const signup = useMutation({
     mutationFn: signupForAccount,
@@ -28,9 +29,12 @@ export default function SignupModal(props: DialogModalProps) {
         setDisplayName('')
         setEmailAddress('')
         setPassword('')
+        setSignupError('')
+
 
         props.onSuccess && props.onSuccess(res.data!)
       } else {
+        setSignupError(res.error!.message)
         props.onError && props.onError(res.error!)
       }
     },
@@ -41,6 +45,8 @@ export default function SignupModal(props: DialogModalProps) {
     if (!displayName.trim()) return
     if (!emailAddress.trim()) return
     if (!password.trim()) return
+
+    setSignupError('')
 
     await signup.mutateAsync({
       username: username.trim(),
@@ -71,7 +77,8 @@ export default function SignupModal(props: DialogModalProps) {
               </div>
               <div className={'px-2'}>
                 <input className={'w-full bg-neutral-900 text-indigo-200 border-indigo-400 border-2 px-2 py-1'}
-                       value={username} onChange={(e) => setUsername(e.target.value)}/>
+                       value={username}
+                       onChange={(e) => setUsername(e.target.value)}/>
               </div>
             </div>
             <div className={'flex flex-row place-items-center'}>
@@ -80,7 +87,8 @@ export default function SignupModal(props: DialogModalProps) {
               </div>
               <div className={'px-2'}>
                 <input className={'w-full bg-neutral-900 text-indigo-200 border-indigo-400 border-2 px-2 py-1'}
-                       value={displayName} onChange={(e) => setDisplayName(e.target.value)}/>
+                       value={displayName}
+                       onChange={(e) => setDisplayName(e.target.value)}/>
               </div>
             </div>
             <div className={'flex flex-row place-items-center'}>
@@ -89,7 +97,8 @@ export default function SignupModal(props: DialogModalProps) {
               </div>
               <div className={'px-2'}>
                 <input className={'w-full bg-neutral-900 text-indigo-200 border-indigo-400 border-2 px-2 py-1'}
-                       value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)}/>
+                       value={emailAddress}
+                       onChange={(e) => setEmailAddress(e.target.value)}/>
               </div>
             </div>
             <div className={'flex flex-row place-items-center'}>
@@ -98,13 +107,21 @@ export default function SignupModal(props: DialogModalProps) {
               </div>
               <div className={'px-2'}>
                 <input className={'w-full bg-neutral-900 text-indigo-200 border-indigo-400 border-2 px-2 py-1'}
-                       value={password} onChange={(e) => setPassword(e.target.value)}/>
+                       type={'password'}
+                       value={password}
+                       onChange={(e) => setPassword(e.target.value)}/>
               </div>
             </div>
             <div className={'py-2'}/>
+            <Conditional condition={signUpError !== ''}>
+              <div className={'text-center text-indigo-400 p-2'}>{signUpError}
+              </div>
+            </Conditional>
             <button
-              className={'text-xl text-indigo-300 border-indigo-400 border-2 rounded-2xl hover:bg-indigo-950 active:bg-indigo-900 px-2 py-1'}
-              onClick={() => validateAndSubmit()}>
+              className={'text-xl text-indigo-300 border-indigo-400 border-2 rounded-2xl hover:bg-indigo-950 active:bg-indigo-900 disabled:bg-gray-700 px-2 py-1'}
+              onClick={() => validateAndSubmit()}
+              disabled={signup.isLoading}
+            >
               Submit
             </button>
           </div>
