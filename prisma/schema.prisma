@@ -17,6 +17,7 @@ model Account {
   displayName  String   @db.VarChar(30)
   emailAddress String   @db.VarChar(100)
   passwordHash String   @db.VarChar(80)
+  gold         Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
 }

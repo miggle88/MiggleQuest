@@ -1,10 +1,10 @@
 'use client'
 
-import NavLink from '@/components/NavLink'
-import NavButton from '@/components/NavButton'
+import NavLink from '@/components/navigation/NavLink'
+import NavButton from '@/components/navigation/NavButton'
 import { useContext, useState } from 'react'
 import { NavBarContext } from '@/contexts/NavBarContext'
-import Conditional from '@/components/Conditional'
+import Conditional from '@/components/common/Conditional'
 
 export type NavBarProps = {}
 
@@ -19,7 +19,7 @@ export default function NavBar(props: NavBarProps) {
     <NavLink href={'leaderboard'}>Leaderboard</NavLink>
     <div className={'w-full'}/>
     <Conditional condition={!isLoggedIn}>
-      <NavButton onClick={() => context.signupRequested && context.signupRequested()}>
+      <NavButton onClick={() => context.loginRequested && context.loginRequested()}>
         Signup or Login
       </NavButton>
     </Conditional>

@@ -2,15 +2,16 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export type AnyObject = Record<string, any>
 
-export type ApiResponse<TData = AnyObject, TError = ApiError> = {
-  status: number
-  ok: boolean,
-  data: TData | null
-  error: TError | null
-}
+export type ApiResponse<TData = AnyObject, TError = ApiError> =
+  { status: number, ok: true, data: TData } | { status: number, ok: false, error: TError }
 
 export type ApiError = {
   message: string
+}
+
+export type UserToken = {
+  id: number
+  username: string
 }
 
 export type SignupRequest = {

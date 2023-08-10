@@ -1,16 +1,19 @@
 'use client'
 
-import Conditional from '@/components/Conditional'
+import Conditional from '@/components/common/Conditional'
 import { useState } from 'react'
 import { ApiError, UserAccount } from '@/types'
 import { useMutation } from '@tanstack/react-query'
 import { signupForAccount } from '@/api-client'
+import Button from '@/components/common/Button'
+import Divider from '@/components/common/Divider'
 
 export type DialogModalProps = {
   show: boolean | (() => boolean)
   onSuccess?: (user: UserAccount) => void
   onError?: (error: ApiError) => void
   onDismiss?: () => void
+  onLoginRequested?: () => void
 }
 
 export default function SignupModal(props: DialogModalProps) {
@@ -32,10 +35,10 @@ export default function SignupModal(props: DialogModalProps) {
         setSignupError('')
 
 
-        props.onSuccess && props.onSuccess(res.data!)
+        props.onSuccess && props.onSuccess(res.data)
       } else {
-        setSignupError(res.error!.message)
-        props.onError && props.onError(res.error!)
+        setSignupError(res.error.message)
+        props.onError && props.onError(res.error)
       }
     },
   })
@@ -64,12 +67,18 @@ export default function SignupModal(props: DialogModalProps) {
           <div className={'flex flex-col border-indigo-400 border-2 rounded-2xl p-2'}>
             <div className={'flex flex-row space-x-8 place-items-center'}>
               <div className={'w-full text-3xl text-center pl-8 pr-4'}>Signup</div>
-              <button
-                className={'w-[48px] h-[48px] text-4xl text-center text-indigo-300 font-bold rounded-2xl pr-4'}
+              <Button
                 onClick={() => props.onDismiss && props.onDismiss()}>X
-              </button>
+              </Button>
             </div>
-            <div className={'border-b-2 border-indigo-400 py-2'}/>
+            <Divider/>
+            <div className={'py-1'}/>
+            <button
+              className={'text-xl text-indigo-300 border-indigo-400 border-2 rounded-2xl hover:bg-indigo-950 active:bg-indigo-900 disabled:bg-gray-700 px-2 py-1'}
+              onClick={() => props.onLoginRequested && props.onLoginRequested()}
+            >
+              Login
+            </button>
             <div className={'py-2'}/>
             <div className={'flex flex-row place-items-center'}>
               <div className={'w-[180px] text-xl text-right px-4 py-2'}>
@@ -117,13 +126,12 @@ export default function SignupModal(props: DialogModalProps) {
               <div className={'text-center text-indigo-400 p-2'}>{signUpError}
               </div>
             </Conditional>
-            <button
-              className={'text-xl text-indigo-300 border-indigo-400 border-2 rounded-2xl hover:bg-indigo-950 active:bg-indigo-900 disabled:bg-gray-700 px-2 py-1'}
+            <Button
               onClick={() => validateAndSubmit()}
               disabled={signup.isLoading}
             >
               Submit
-            </button>
+            </Button>
           </div>
         </div>
       </div>
