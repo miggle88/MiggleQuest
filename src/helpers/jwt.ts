@@ -1,9 +1,13 @@
 import { sign, verify } from 'jsonwebtoken'
 import { UserToken } from '@/types'
 
-export function signAsync(user: UserToken, privateKey: string): Promise<string> {
+export function signAsync(user: UserToken, privateKey: string, expiresIn?: number | string): Promise<string> {
+  const options = {
+    expiresIn,
+  }
+
   return new Promise((resolve, reject) => {
-    sign(user, privateKey, (err, token) => {
+    sign(user, privateKey, options, (err, token) => {
       if (err) {
         return reject(err)
       }

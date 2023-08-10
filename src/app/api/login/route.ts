@@ -8,6 +8,7 @@ import { LoginRequest } from '@/types'
 import { waitDelay } from '@/helpers/time'
 import { signAsync } from '@/helpers/jwt'
 
+const JWT_EXPIRATION = '1d' // 24 hours
 const USERNAME_REGEX = /^[0-9a-z]+$/i
 
 const bodySchema = z.object({
@@ -59,11 +60,12 @@ export async function POST(request: Request) {
       { status: 400 })
   }
 
+  // Create a JWT token for authentication
   const privateKey = process.env.JWT_SECRET!
   const token = await signAsync({
     id: existingAccount.id,
     username: existingAccount.username,
-  }, privateKey)
+  }, privateKey, JWT_EXPIRATION)
 
   return NextResponse.json({
     message: 'Login Successful! Welcome to MiggleQuest',
