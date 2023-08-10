@@ -2,31 +2,37 @@
 
 import Conditional from '@/components/Conditional'
 import { useState } from 'react'
-import { SignupDetails } from '@/types'
+import { SignupRequest } from '@/types'
 
 export type DialogModalProps = {
   show: boolean | (() => boolean)
-  onSubmit?: (details: SignupDetails) => void,
+  onSubmit?: (req: SignupRequest) => void,
   onDismiss?: () => void
 }
 
 export default function SignupModal(props: DialogModalProps) {
   const [username, setUsername] = useState('')
+  const [displayName, setDisplayName] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
   const [password, setPassword] = useState('')
 
+
   const validateAndSubmit = () => {
     if (!username.trim()) return
+    if (!displayName.trim()) return
     if (!emailAddress.trim()) return
     if (!password.trim()) return
 
+
     props.onSubmit && props.onSubmit({
       username,
+      displayName,
       emailAddress,
       password,
     })
-
+    // clears out the fields on submit
     setUsername('')
+    setDisplayName('')
     setEmailAddress('')
     setPassword('')
   }
@@ -53,6 +59,15 @@ export default function SignupModal(props: DialogModalProps) {
               <div className={'px-2'}>
                 <input className={'w-full bg-neutral-900 text-indigo-200 border-indigo-400 border-2 px-2 py-1'}
                        value={username} onChange={(e) => setUsername(e.target.value)}/>
+              </div>
+            </div>
+            <div className={'flex flex-row place-items-center'}>
+              <div className={'w-[180px] text-xl text-right px-4 py-2'}>
+                Display Name:
+              </div>
+              <div className={'px-2'}>
+                <input className={'w-full bg-neutral-900 text-indigo-200 border-indigo-400 border-2 px-2 py-1'}
+                       value={displayName} onChange={(e) => setDisplayName(e.target.value)}/>
               </div>
             </div>
             <div className={'flex flex-row place-items-center'}>

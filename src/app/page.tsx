@@ -14,8 +14,8 @@ export default function Home() {
       { /* Keep this as the first element to prevent layout issues! */}
       <SignupModal show={showSignUp}
                    onDismiss={() => setShowSignUp(false)}
-                   onSubmit={(details) => {
-                     console.log('User signed up with:', details)
+                   onSubmit={(req) => {
+                     console.log('User signed up with:', req)
                      setShowSignUp(false)
                    }}/>
       <div>
