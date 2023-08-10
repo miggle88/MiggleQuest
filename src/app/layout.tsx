@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import React from 'react'
+import Providers from '@/app/providers'
 import NavLayout from '@/components/NavLayout'
 
 export const metadata: Metadata = {
@@ -16,9 +17,11 @@ export default function RootLayout(props: RootLayoutProps) {
   return (
     <html lang="en">
     <body>
-    <NavLayout>
-      {props.children}
-    </NavLayout>
+    <Providers>
+      <NavLayout>
+        {props.children}
+      </NavLayout>
+    </Providers>
     </body>
     </html>
   )

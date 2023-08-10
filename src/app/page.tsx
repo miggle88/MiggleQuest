@@ -5,18 +5,21 @@ import { NavBarContext } from '@/contexts/NavBarContext'
 
 export default function Home() {
   const context = useContext(NavBarContext)
-  const [showSignUp, setShowSignUp] = useState(false)
+  const [showSignup, setShowSignup] = useState(false)
 
-  context.signupRequested = () => setShowSignUp(true)
+  context.signupRequested = () => setShowSignup(true)
 
   return (
     <main>
       { /* Keep this as the first element to prevent layout issues! */}
-      <SignupModal show={showSignUp}
-                   onDismiss={() => setShowSignUp(false)}
-                   onSubmit={(req) => {
-                     console.log('User signed up with:', req)
-                     setShowSignUp(false)
+      <SignupModal show={showSignup}
+                   onDismiss={() => setShowSignup(false)}
+                   onSuccess={(account) => {
+                     console.log('User signed up successfully', account)
+                     setShowSignup(false)
+                   }}
+                   onError={(error) => {
+                     console.log('User was unable to signup', error)
                    }}/>
       <div>
       </div>

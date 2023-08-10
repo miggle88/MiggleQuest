@@ -2,11 +2,14 @@
 
 import Conditional from '@/components/Conditional'
 import { useState } from 'react'
-import { SignupRequest } from '@/types'
+import { ApiError, UserAccount } from '@/types'
+import { useMutation } from '@tanstack/react-query'
+import { signupForAccount } from '@/api-client'
 
 export type DialogModalProps = {
   show: boolean | (() => boolean)
-  onSubmit?: (req: SignupRequest) => void,
+  onSuccess?: (user: UserAccount) => void
+  onError?: (error: ApiError) => void
   onDismiss?: () => void
 }
 
@@ -16,25 +19,35 @@ export default function SignupModal(props: DialogModalProps) {
   const [emailAddress, setEmailAddress] = useState('')
   const [password, setPassword] = useState('')
 
+  const signup = useMutation({
+    mutationFn: signupForAccount,
+    onSuccess: (res) => {
+      if (res.ok) {
+        // Clear the fields after successful signup
+        setUsername('')
+        setDisplayName('')
+        setEmailAddress('')
+        setPassword('')
 
-  const validateAndSubmit = () => {
+        props.onSuccess && props.onSuccess(res.data!)
+      } else {
+        props.onError && props.onError(res.error!)
+      }
+    },
+  })
+
+  const validateAndSubmit = async () => {
     if (!username.trim()) return
     if (!displayName.trim()) return
     if (!emailAddress.trim()) return
     if (!password.trim()) return
 
-
-    props.onSubmit && props.onSubmit({
-      username,
-      displayName,
-      emailAddress,
-      password,
+    await signup.mutateAsync({
+      username: username.trim(),
+      displayName: displayName.trim(),
+      emailAddress: emailAddress.trim(),
+      password: password.trim(),
     })
-    // clears out the fields on submit
-    setUsername('')
-    setDisplayName('')
-    setEmailAddress('')
-    setPassword('')
   }
 
   return (

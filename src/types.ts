@@ -1,6 +1,38 @@
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+
+export type ApiResponse<TData, TError = ApiError> = {
+  status: number
+  ok: boolean,
+  data: TData | null
+  error: TError | null
+}
+
+export type ApiError = {
+  message: string
+}
+
 export type SignupRequest = {
-  username: string,
-  displayName: string,
-  emailAddress: string,
+  username: string
+  displayName: string
+  emailAddress: string
   password: string
 }
+
+export type LoginRequest = {
+  username: string
+  password: string
+}
+
+export type LoginResult = {
+  token: string
+}
+
+export type UserAccount = {
+  id: number
+  username: string
+  displayName: string
+  emailAddress: string
+  createdAt: Date,
+  updatedAt: Date
+}
+

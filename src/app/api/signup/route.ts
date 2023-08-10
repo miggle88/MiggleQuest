@@ -10,35 +10,35 @@ export async function POST(request: Request) {
   // Validate that username is not null or empty
   if (!fields.username?.trim()) {
     return NextResponse.json({
-        error: 'Invalid user name',
+        errorMessage: 'Invalid user name',
       },
       { status: 400 })
   }
   // Validate that display name is not null or empty
   if (!fields.displayName?.trim()) {
     return NextResponse.json({
-        error: 'Invalid display name',
+        errorMessage: 'Invalid display name',
       },
       { status: 400 })
   }
   // Validate that email address is not null or empty
   if (!fields.emailAddress?.trim()) {
     return NextResponse.json({
-        error: 'Invalid email address',
+        errorMessage: 'Invalid email address',
       },
       { status: 400 })
   }
   // Validate that password is not null or empty
   if (!fields.password?.trim()) {
     return NextResponse.json({
-        error: 'Invalid password',
+        errorMessage: 'Invalid password',
       },
       { status: 400 })
   }
   // Validate that the password is at least characters long
   if (fields.password.length < 8) {
     return NextResponse.json({
-        error: 'Password must be at least 8 characters long',
+        errorMessage: 'Password must be at least 8 characters long',
       },
       { status: 400 })
   }
@@ -50,22 +50,29 @@ export async function POST(request: Request) {
 
   if (existingAccount) {
     return NextResponse.json({
-        error: 'User name is already in use',
+        errorMessage: 'User name is already in use',
       },
       { status: 400 })
 
   }
 
-  const passwordHash = await hashPasswordAsync(fields.password)
+  // Calculate the bcrypt hash of the password to store
+  const hash = await hashPasswordAsync(fields.password)
 
   const newAccount = await prisma.account.create({
     data: {
       username: trimmedUsername,
       displayName: fields.displayName.trim(),
       emailAddress: fields.emailAddress.trim(),
-      passwordHash,
+      passwordHash: hash,
     },
   })
 
-  return NextResponse.json({ message: 'account created', data: newAccount })
+  // Pull the password hash out, so we don't return it in the JSON
+  const { passwordHash, ...accountWithoutHash } = newAccount
+
+  return NextResponse.json({
+    message: 'account created',
+    data: accountWithoutHash,
+  })
 }
