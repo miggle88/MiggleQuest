@@ -1,5 +1,4 @@
-'use client'
-import { ApiError, ApiResponse, HttpMethod, LoginRequest, LoginResult, SignupRequest, UserAccount } from '@/types'
+import { ApiResponse, HttpMethod, LoginRequest, LoginResult, SignupRequest, UserAccount } from '@/types'
 
 const BASE_PATH = '/api'
 
@@ -9,6 +8,10 @@ export async function signupForAccount(data: SignupRequest): Promise<ApiResponse
 
 export async function loginToAccount(data: LoginRequest): Promise<ApiResponse<LoginResult>> {
   return makeApiCall('login', data, 'POST')
+}
+
+export async function logoutFromAccount(): Promise<ApiResponse> {
+  return makeApiCall('logout', null, 'POST')
 }
 
 export async function getAccountForCurrentUser(): Promise<ApiResponse<UserAccount>> {
@@ -27,7 +30,7 @@ export async function makeApiCall<TRequest, TResponse>(url: string, data?: TRequ
     return {
       status: res.status,
       ok: true,
-      data: body as TResponse,
+      data: body.data as TResponse,
     }
   }
 

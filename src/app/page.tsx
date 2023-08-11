@@ -1,4 +1,5 @@
 'use client'
+
 import SignupModal from '@/components/modals/SignupModal'
 import { useContext, useEffect, useState } from 'react'
 import LoginModal from '@/components/modals/LoginModal'
@@ -7,8 +8,10 @@ import { EventName } from '@/constants'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountForCurrentUser } from '@/api-client'
 import { UserContext } from '@/contexts/UserContext'
+import { useAuthToken } from '@/hooks/useAuthToken'
 
 export default function Home() {
+  const { token, deleteToken } = useAuthToken()
   const { emitter } = useContext(EventsContext)!
   const { currentUser, setCurrentUser } = useContext(UserContext)!
   const [showSignup, setShowSignup] = useState(false)
@@ -35,11 +38,13 @@ export default function Home() {
         setCurrentUser(result.data)
         return result.data
       } else {
-        console.log('unable to fetch user account', result.error)
+        console.log('unable to fetch user account, clearing token', result.error)
         setCurrentUser(null)
+        deleteToken()
         return null
       }
     },
+    enabled: !!token,
   })
 
   return (
