@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import React from 'react'
 import Providers from '@/app/providers'
-import NavLayout from '@/components/navigation/NavLayout'
+import NavBar from '@/components/navigation/NavBar'
 
 export const metadata: Metadata = {
   title: 'MiggleQuest',
@@ -18,9 +18,10 @@ export default function RootLayout(props: RootLayoutProps) {
     <html lang="en">
     <body>
     <Providers>
-      <NavLayout>
+      <div className={'flex flex-col'}>
+        <NavBar/>
         {props.children}
-      </NavLayout>
+      </div>
     </Providers>
     </body>
     </html>
