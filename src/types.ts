@@ -37,6 +37,7 @@ export type UserAccount = {
   username: string
   displayName: string
   emailAddress: string
+  gold: number
   createdAt: Date,
   updatedAt: Date
 }
@@ -58,6 +59,8 @@ export type HeroCharacter = {
   class: HeroClass
   experience: number
   isAlive: boolean
+  isAvailable: boolean
+  nextAvailableAt?: Date
   strength: number
   dexterity: number
   intelligence: number

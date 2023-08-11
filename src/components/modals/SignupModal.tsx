@@ -1,22 +1,24 @@
 'use client'
 
 import Conditional from '@/components/common/Conditional'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ApiError, UserAccount } from '@/types'
 import { useMutation } from '@tanstack/react-query'
 import { signupForAccount } from '@/api-client'
 import Button from '@/components/common/Button'
 import Divider from '@/components/common/Divider'
+import { EventsContext } from '@/contexts/EventsContext'
+import { EventName } from '@/constants'
 
 export type DialogModalProps = {
   show: boolean | (() => boolean)
   onSuccess?: (user: UserAccount) => void
   onError?: (error: ApiError) => void
   onDismiss?: () => void
-  onLoginRequested?: () => void
 }
 
 export default function SignupModal(props: DialogModalProps) {
+  const { emitter } = useContext(EventsContext)!
   const [username, setUsername] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
@@ -75,7 +77,7 @@ export default function SignupModal(props: DialogModalProps) {
             <div className={'py-1'}/>
             <button
               className={'text-xl text-indigo-300 border-indigo-400 border-2 rounded-2xl hover:bg-indigo-950 active:bg-indigo-900 disabled:bg-gray-700 px-2 py-1'}
-              onClick={() => props.onLoginRequested && props.onLoginRequested()}
+              onClick={() => emitter.emit(EventName.LoginRequested)}
             >
               Login
             </button>

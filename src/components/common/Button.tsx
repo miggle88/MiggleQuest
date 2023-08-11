@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 
 export type ButtonProps = {
   children?: ReactNode
+  type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   onClick?: () => void
 }
@@ -14,6 +15,7 @@ const DISABLED_STYLE = 'disabled:bg-gray-700'
 export default function Button(props: ButtonProps) {
   return <button
     className={`${NORMAL_STYLE} ${HOVER_STYLE} ${ACTIVE_STYLE} ${DISABLED_STYLE}`}
+    type={props.type ?? 'button'}
     disabled={props.disabled ?? false} onClick={() => props.onClick && props.onClick()}>
     {props.children}
   </button>

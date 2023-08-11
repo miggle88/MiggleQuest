@@ -1,20 +1,22 @@
 import { ApiError, LoginResult } from '@/types'
 import Conditional from '@/components/common/Conditional'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { loginToAccount } from '@/api-client'
 import Button from '@/components/common/Button'
 import Divider from '@/components/common/Divider'
+import { EventsContext } from '@/contexts/EventsContext'
+import { EventName } from '@/constants'
 
 export type LoginModalProps = {
   show: boolean | (() => boolean)
   onSuccess?: (user: LoginResult) => void
   onError?: (error: ApiError) => void
   onDismiss?: () => void
-  onSignupRequested?: () => void
 }
 
 export default function LoginModal(props: LoginModalProps) {
+  const { emitter } = useContext(EventsContext)!
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
@@ -57,15 +59,14 @@ export default function LoginModal(props: LoginModalProps) {
           <div className={'flex flex-col border-indigo-400 border-2 rounded-2xl p-2'}>
             <div className={'flex flex-row space-x-8 place-items-center'}>
               <div className={'w-full text-3xl text-center pl-8 pr-4'}>Login</div>
-              <button
-                className={'w-[48px] h-[48px] text-4xl text-center text-indigo-300 font-bold rounded-2xl pr-4'}
+              <Button
                 onClick={() => props.onDismiss && props.onDismiss()}>X
-              </button>
+              </Button>
             </div>
             <Divider/>
             <div className={'py-1'}/>
             <Button
-              onClick={() => props.onSignupRequested && props.onSignupRequested()}
+              onClick={() => emitter.emit(EventName.SignupRequested)}
             >Signup
             </Button>
             <div className={'py-2'}/>

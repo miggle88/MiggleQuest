@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { prisma } from '@/db'
 import { comparePasswordAsync } from '@/helpers/bcrypt'
 import { z } from 'zod'
@@ -8,7 +9,7 @@ import { LoginRequest } from '@/types'
 import { waitDelay } from '@/helpers/time'
 import { signAsync } from '@/helpers/jwt'
 
-const JWT_EXPIRATION = '1d' // 24 hours
+const JWT_EXPIRATION_SECONDS = 24 * 60 * 60 // 24 hours
 const USERNAME_REGEX = /^[0-9a-z]+$/i
 
 const bodySchema = z.object({
@@ -65,10 +66,15 @@ export async function POST(request: Request) {
   const token = await signAsync({
     id: existingAccount.id,
     username: existingAccount.username,
-  }, privateKey, JWT_EXPIRATION)
+  }, privateKey, JWT_EXPIRATION_SECONDS)
+
+  // Set cookie with expiration
+  cookies().set('token', token, {
+    expires: Date.now() + JWT_EXPIRATION_SECONDS * 1000,
+  })
 
   return NextResponse.json({
     message: 'Login Successful! Welcome to MiggleQuest',
-    token,
+    data: { token },
   })
 }
