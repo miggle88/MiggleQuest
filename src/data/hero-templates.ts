@@ -9,6 +9,7 @@ function createBaseHero(heroClass: HeroClass, props?: Partial<HeroCharacter>): H
     class: heroClass,
     experience: 0,
     isAlive: true,
+    isAvailable: true,
     strength: 3,
     dexterity: 3,
     intelligence: 3,

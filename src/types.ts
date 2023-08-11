@@ -59,6 +59,8 @@ export type HeroCharacter = {
   class: HeroClass
   experience: number
   isAlive: boolean
+  isAvailable: boolean
+  nextAvailableAt?: Date
   strength: number
   dexterity: number
   intelligence: number
