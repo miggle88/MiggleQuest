@@ -37,6 +37,7 @@ export type UserAccount = {
   username: string
   displayName: string
   emailAddress: string
+  gold: number
   createdAt: Date,
   updatedAt: Date
 }

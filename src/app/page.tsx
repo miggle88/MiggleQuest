@@ -11,11 +11,15 @@ import { UserContext } from '@/contexts/UserContext'
 import { useAuthToken } from '@/hooks/useAuthToken'
 
 export default function Home() {
-  const { token, deleteToken } = useAuthToken()
+  const { token, setToken } = useAuthToken()
   const { emitter } = useContext(EventsContext)!
   const { currentUser, setCurrentUser } = useContext(UserContext)!
   const [showSignup, setShowSignup] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
+
+  useEffect(() => {
+    token && fetchMyAccount.refetch()
+  }, [token])
 
   useEffect(() => {
     emitter.on(EventName.LoginRequested, () => {
@@ -39,12 +43,12 @@ export default function Home() {
         return result.data
       } else {
         console.log('unable to fetch user account, clearing token', result.error)
+        setToken(null)
         setCurrentUser(null)
-        deleteToken()
         return null
       }
     },
-    enabled: !!token,
+    enabled: false,
   })
 
   return (
@@ -52,9 +56,10 @@ export default function Home() {
       { /* Keep this as the first element to prevent layout issues! */}
       <LoginModal show={showLogin}
                   onDismiss={() => setShowLogin(false)}
-                  onSuccess={(account) => {
-                    console.log('User has logged in successfully', account)
+                  onSuccess={async (result) => {
+                    console.log('User has logged in successfully')
                     setShowLogin(false)
+                    setToken(result.token)
                   }}
                   onError={error => {
                     console.log('User was unable to login', error)
