@@ -1,7 +1,8 @@
 'use client'
 
-import Conditional from '@/components/common/Conditional'
 import { useContext } from 'react'
+import { useRouter } from 'next/navigation'
+import Conditional from '@/components/common/Conditional'
 import { EventsContext } from '@/contexts/EventsContext'
 import { UserContext } from '@/contexts/UserContext'
 import { useMutation } from '@tanstack/react-query'
@@ -10,15 +11,16 @@ import { EventName } from '@/constants'
 
 export type UserPanelProps = {}
 export default function UserPanel(props: UserPanelProps) {
+  const { push } = useRouter()
   const { emitter } = useContext(EventsContext)!
   const { currentUser, setCurrentUser } = useContext(UserContext)!
-
 
   const logout = useMutation({
     mutationFn: logoutFromAccount,
     onSuccess: () => {
       console.log('logged out')
       setCurrentUser(null)
+      push('/')
     },
   })
 

@@ -1,25 +1,26 @@
 'use client'
 
-import SignupModal from '@/components/modals/SignupModal'
 import { useContext, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import LoginModal from '@/components/modals/LoginModal'
+import SignupModal from '@/components/modals/SignupModal'
 import { EventsContext } from '@/contexts/EventsContext'
 import { EventName } from '@/constants'
-import { useQuery } from '@tanstack/react-query'
-import { getAccountForCurrentUser } from '@/api-client'
-import { UserContext } from '@/contexts/UserContext'
 import { useAuthToken } from '@/hooks/useAuthToken'
 
 export default function Home() {
+  const { push } = useRouter()
   const { token, setToken } = useAuthToken()
   const { emitter } = useContext(EventsContext)!
-  const { currentUser, setCurrentUser } = useContext(UserContext)!
   const [showSignup, setShowSignup] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    token && fetchMyAccount.refetch()
-  }, [token])
+    if (isLoggedIn) {
+      push('/play')
+    }
+  }, [isLoggedIn, push])
 
   useEffect(() => {
     emitter.on(EventName.LoginRequested, () => {
@@ -33,24 +34,6 @@ export default function Home() {
     })
   }, [])
 
-  const fetchMyAccount = useQuery({
-    queryKey: ['my-account'],
-    queryFn: async () => {
-      const result = await getAccountForCurrentUser()
-      if (result.ok) {
-        console.log('fetched user account', result.data)
-        setCurrentUser(result.data)
-        return result.data
-      } else {
-        console.log('unable to fetch user account, clearing token', result.error)
-        setToken(null)
-        setCurrentUser(null)
-        return null
-      }
-    },
-    enabled: false,
-  })
-
   return (
     <main>
       { /* Keep this as the first element to prevent layout issues! */}
@@ -60,9 +43,11 @@ export default function Home() {
                     console.log('User has logged in successfully')
                     setShowLogin(false)
                     setToken(result.token)
+                    setIsLoggedIn(true)
                   }}
                   onError={error => {
                     console.log('User was unable to login', error)
+                    setIsLoggedIn(false)
                   }}
       />
 

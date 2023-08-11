@@ -1,4 +1,4 @@
-import { ApiResponse, HttpMethod, LoginRequest, LoginResult, SignupRequest, UserAccount } from '@/types'
+import { ApiResponse, HeroCharacter, HttpMethod, LoginRequest, LoginResult, SignupRequest, UserAccount } from '@/types'
 
 const BASE_PATH = '/api'
 
@@ -16,6 +16,10 @@ export async function logoutFromAccount(): Promise<ApiResponse> {
 
 export async function getAccountForCurrentUser(): Promise<ApiResponse<UserAccount>> {
   return makeApiCall('accounts/me', null, 'GET')
+}
+
+export async function getHeroesForAccount(): Promise<ApiResponse<HeroCharacter[]>> {
+  return makeApiCall('heroes', null, 'GET')
 }
 
 export async function makeApiCall<TRequest, TResponse>(url: string, data?: TRequest, method: HttpMethod = 'GET'): Promise<ApiResponse<TResponse>> {
