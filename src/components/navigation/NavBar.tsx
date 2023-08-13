@@ -1,5 +1,3 @@
-import UserPanel from '@/components/UserPanel'
-
 export type NavBarProps = {}
 
 export default function NavBar(props: NavBarProps) {
@@ -8,7 +6,6 @@ export default function NavBar(props: NavBarProps) {
       MiggleQuest
     </div>
     <div className={'grow'}/>
-    <UserPanel/>
   </div>)
 }
 
