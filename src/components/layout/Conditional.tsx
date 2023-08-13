@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export type ConditionalProps = {
+export interface ConditionalProps {
   condition: boolean | (() => boolean)
   children: ReactNode
 }

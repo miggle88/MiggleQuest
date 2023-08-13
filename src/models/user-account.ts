@@ -3,7 +3,6 @@ export type UserAccount = {
   username: string
   displayName: string
   emailAddress: string
-  passwordHash: string
   createdAt: Date
   updatedAt: Date
 }

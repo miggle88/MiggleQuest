@@ -1,27 +1,39 @@
-import { ReactNode } from 'react'
-import Conditional from '@/components/layout/Conditional'
-import BackButton from '@/components/BackButton'
+'use client'
 
-export type DestinationLayoutProps = {
+import { ReactNode } from 'react'
+import { useGameState } from '@/store'
+import Conditional from '@components/layout/Conditional'
+import Link from 'next/link'
+
+export interface DestinationLayoutProps {
   title: string
-  hideBackButton?: boolean
-  onBack?: () => void
+  previousHref?: string
   children?: ReactNode
 }
 
 export default function DestinationLayout(props: DestinationLayoutProps) {
-  return (
-    <div className={'flex flex-col'}>
-      <div className={'flex flex-row w-full bg-indigo-950 bg-opacity-50 place-items-center'}>
-        <div className={'basis-1/5 px-4 py-2'}>
-          <Conditional condition={!props.hideBackButton}>
-            <BackButton onClick={() => props.onBack && props.onBack()}>Back</BackButton>
-          </Conditional>
-        </div>
-        <div className={'basis-3/5 px-4 py-2 text-3xl text-center font-bold'}>{props.title}</div>
-        <div className={'basis-1/5 px-4 py-2 text-2xl text-right'}>100000 Gold</div>
+  const { userCurrency } = useGameState()
+
+  return (<div className={'w-full h-full flex flex-col'}>
+    <div className={'w-full flex flex-row place-items-center border-neutral-700 border-b-2 p-4'}>
+      <div className={'min-w-[100px]'}>
+        <Conditional condition={!!props.previousHref}>
+          <div
+            className={'text-xl text-center border-white border-2 rounded-xl hover:bg-neutral-900 active:bg-neutral-800 px-4 py-4'}>
+            <Link href={props.previousHref!}>Go back</Link>
+          </div>
+        </Conditional>
       </div>
-      <div className={'grow'}>{props.children}</div>
+      <div className={'grow text-3xl text-center'}>
+        {props.title}
+      </div>
+      <div className={'min-w-[100px] text-2xl text-right'}>
+        <span className={'font-bold text-yellow-300'}>{userCurrency?.gold ?? 0}</span>
+        <span className={'text-yellow-600'}> gold</span>
+      </div>
     </div>
-  )
+    <div>
+      {props.children}
+    </div>
+  </div>)
 }
