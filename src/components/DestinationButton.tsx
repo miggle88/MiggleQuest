@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import Divider from '@/components/common/Divider'
 import { useRouter } from 'next/navigation'
 
@@ -15,7 +14,6 @@ const NORMAL_STYLE = 'text-xl bg-indigo-700 bg-opacity-90 text-indigo-200 border
 const HOVER_STYLE = 'hover:bg-indigo-950'
 const ACTIVE_STYLE = 'active:bg-indigo-900'
 const DISABLED_STYLE = 'disabled:bg-gray-700'
-
 
 export default function DestinationButton(props: DestinationButton) {
   const router = useRouter()

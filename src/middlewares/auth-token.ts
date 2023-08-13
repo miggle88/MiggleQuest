@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { UserToken } from '@/types'
 import { JsonWebTokenError } from 'jsonwebtoken'
-import { verifyAsync } from '@/helpers/jwt'
+import { verifyAsync } from '@/utils/jwt'
 
 const BEARER_REGEX = /^(Bearer)?\s*(.+)\s*/i
 

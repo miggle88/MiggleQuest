@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import Conditional from '@/components/common/Conditional'
+import Conditional from '@/components/layout/Conditional'
 import BackButton from '@/components/BackButton'
 
 export type DestinationLayoutProps = {

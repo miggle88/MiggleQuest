@@ -10,7 +10,6 @@ const HOVER_STYLE = 'hover:bg-indigo-900'
 const ACTIVE_STYLE = 'active:bg-indigo-700'
 const DISABLED_STYLE = 'disabled:bg-gray-500'
 
-
 export default function BackButton(props: BackButtonProps) {
   return (
     <button
