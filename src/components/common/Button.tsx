@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export type ButtonProps = {
+export interface ButtonProps {
   children?: ReactNode
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
