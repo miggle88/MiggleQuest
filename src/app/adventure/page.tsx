@@ -25,6 +25,7 @@ export default function Adventure() {
       </div>
       <div className={'py-2'}/>
       <div className={'text-2xl font-bold text-center'}>Select Difficulty</div>
+      <div className={'py-2'}/>
       <DifficultySelector difficulties={difficultySettings}
                           selectedDifficulty={selectedDifficultySetting}
                           onSelected={(difficulty) => setSelectedDifficultySetting(difficulty)}/>

@@ -1,5 +1,5 @@
 import { DifficultySetting } from '@/models'
-import DifficultyCard from '@components/adventure/DiffucultyCard'
+import DifficultyCard from '@components/adventure/DifficultyCard'
 
 export interface DifficultySelectorProps {
   difficulties: DifficultySetting[]
