@@ -2,20 +2,13 @@
 
 import DestinationLayout from '@components/layout/DestinationLayout'
 import { useGameState } from '@/store'
-import { HeroCharacter, HeroClass } from '@/models'
-import { useEffect } from 'react'
 import HeroCard from '@components/roster/HeroCard'
 
 export default function Roster() {
-  const { heroes, setHeroes } = useGameState()
-
-  useEffect(() => {
-    setHeroes(getStartingHeroes())
-  }, [])
-
+  const { heroes } = useGameState()
 
   return (
-    <DestinationLayout title={'Roster'} previousHref={'/'}>
+    <DestinationLayout title={'Roster'} previousHref={'/town'}>
       <div className={'p-4 flex flex-col'}>
         <div className={'text-2xl text-center'}>Ya dudes ({heroes.length})</div>
         <div
@@ -27,47 +20,3 @@ export default function Roster() {
   )
 }
 
-function getStartingHeroes(): HeroCharacter[] {
-  const base: HeroCharacter = {
-    id: '1',
-    accountId: '1',
-    characterName: 'Steve',
-    icon: 'none',
-    description: 'base dude',
-    level: 1,
-    class: HeroClass.Cleric,
-    experience: 0,
-    hitPoints: 15,
-    strength: 3,
-    dexterity: 3,
-    intelligence: 3,
-    constitution: 3,
-    isAlive: true,
-    hiredAt: new Date(),
-  }
-  return [
-    {
-      ...base, characterName: 'Bob',
-      class: HeroClass.Fighter,
-      strength: 4,
-      hitPoints: 20,
-    },
-    {
-      ...base, characterName: 'Claude',
-      class: HeroClass.Rogue,
-      dexterity: 4,
-    },
-    {
-      ...base, characterName: 'Miggle',
-      class: HeroClass.Wizard,
-      intelligence: 4,
-      hitPoints: 12,
-    },
-    {
-      ...base, characterName: 'Larry',
-      class: HeroClass.Cleric,
-      intelligence: 4,
-      hitPoints: 16,
-    },
-  ]
-}

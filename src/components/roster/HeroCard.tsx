@@ -1,5 +1,4 @@
-import { HeroCharacter } from '@/models'
-
+import { HeroCharacter, HeroClass } from '@/models'
 
 export interface HeroCardProps {
   hero: HeroCharacter
@@ -7,8 +6,10 @@ export interface HeroCardProps {
 
 export default function HeroCard(props: HeroCardProps) {
   const hero = props.hero
+  const borderColor = getHeroClassBorder(hero.class)
+
   return (
-    <div className={'border-2 border-neutral-500 rounded p-2'}>
+    <div className={`${borderColor} border-2 rounded p-2`}>
       <div className={'flex flex-col place-content-center p-2'}>
         <div className={'flex flex-row'}>
           <div className={'grow text-lg'}>{hero.characterName}</div>
@@ -27,4 +28,19 @@ export default function HeroCard(props: HeroCardProps) {
       </div>
     </div>
   )
+}
+
+const getHeroClassBorder = (heroClass: HeroClass) => {
+  switch (heroClass as string) {
+    case HeroClass.Fighter:
+      return 'border-red-500'
+    case HeroClass.Rogue:
+      return 'border-sky-500'
+    case HeroClass.Cleric:
+      return 'border-green-600'
+    case HeroClass.Wizard:
+      return 'border-amber-500'
+    default:
+      return 'border-neutral-300'
+  }
 }

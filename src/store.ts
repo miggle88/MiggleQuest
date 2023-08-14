@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { HeroCharacter, UserAccount, UserCurrency } from '@/models'
+import { Biome, HeroCharacter, UserAccount, UserCurrency } from '@/models'
+import { getAvailableBiomes, getStartingHeroes } from '@/mock-data'
 
 export interface GameState {
   user: UserAccount | null
@@ -8,6 +9,8 @@ export interface GameState {
   setUserCurrency: (currencies: UserCurrency) => void
   heroes: HeroCharacter[]
   setHeroes: (heroes: HeroCharacter[]) => void
+  biomes: Biome[]
+  setBiomes: (biomes: Biome[]) => void
 }
 
 export const useGameState = create<GameState>((set) => ({
@@ -15,6 +18,8 @@ export const useGameState = create<GameState>((set) => ({
   setUser: (user) => set({ user }),
   userCurrency: null,
   setUserCurrency: (currency) => set({ userCurrency: currency }),
-  heroes: [],
+  heroes: getStartingHeroes(),
   setHeroes: (heroes) => set({ heroes }),
+  biomes: getAvailableBiomes(),
+  setBiomes: (biomes: Biome[]) => set({ biomes }),
 }))

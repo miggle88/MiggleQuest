@@ -1,27 +1,33 @@
 'use client'
 
 import { ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
 import { useGameState } from '@/store'
 import Conditional from '@components/layout/Conditional'
-import Link from 'next/link'
+import NavButton from '@components/common/NavButton'
 
 export interface DestinationLayoutProps {
   title: string
   previousHref?: string
+  backButtonText?: string
   children?: ReactNode
 }
 
 export default function DestinationLayout(props: DestinationLayoutProps) {
+  const { push } = useRouter()
   const { userCurrency } = useGameState()
+
+  const navigateBack = () => {
+    push(props.previousHref!)
+  }
 
   return (<div className={'w-full h-full flex flex-col'}>
     <div className={'w-full flex flex-row min-h-[92px] place-items-center border-neutral-700 border-b-2 p-4'}>
       <div className={'min-w-[160px]'}>
         <Conditional condition={!!props.previousHref}>
-          <div
-            className={'text-xl text-center border-white border-2 rounded-xl hover:bg-neutral-900 active:bg-neutral-800 px-4 py-2'}>
-            <Link href={props.previousHref!}>Go back</Link>
-          </div>
+          <NavButton href={props.previousHref!}>
+            <span className={'text-xl text-center'}>{props.backButtonText ?? 'Go Back'}</span>
+          </NavButton>
         </Conditional>
       </div>
       <div className={'grow text-3xl text-center'}>
