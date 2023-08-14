@@ -1,4 +1,4 @@
-import { Biome, HeroCharacter, HeroClass } from '@/models'
+import { Biome, DifficultySetting, HeroCharacter, HeroClass } from '@/models'
 
 export function getAvailableBiomes(): Biome[] {
   return [{
@@ -28,6 +28,50 @@ export function getAvailableBiomes(): Biome[] {
   ]
 }
 
+export function getAvailableDifficulties(): DifficultySetting[] {
+  return [
+    {
+      id: 1,
+      name: 'Easy',
+      description: 'a walk in the park',
+      levelModifier: 0.75,
+      goldModifier: 0.75,
+      lootModifier: 0.75,
+      experienceModifier: 0.75,
+      completionSeconds: 10 * 60,
+    },
+    {
+      id: 2,
+      name: 'Normal',
+      description: 'Average challenge',
+      levelModifier: 1,
+      goldModifier: 1,
+      lootModifier: 1,
+      experienceModifier: 1,
+      completionSeconds: 20 * 60,
+    },
+    {
+      id: 3,
+      name: 'Challenging',
+      description: 'not for the feint of heart',
+      levelModifier: 1.25,
+      goldModifier: 1.25,
+      lootModifier: 1.25,
+      experienceModifier: 1.25,
+      completionSeconds: 30 * 60,
+    },
+    {
+      id: 4,
+      name: 'Mania',
+      description: 'You will likely die, but what if...',
+      levelModifier: 2,
+      goldModifier: 2,
+      lootModifier: 2,
+      experienceModifier: 2,
+      completionSeconds: 60 * 60,
+    },
+  ]
+}
 
 export function getStartingHeroes(): HeroCharacter[] {
   const base: HeroCharacter = {

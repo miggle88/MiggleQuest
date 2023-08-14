@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import { Biome, HeroCharacter, UserAccount, UserCurrency } from '@/models'
-import { getAvailableBiomes, getStartingHeroes } from '@/mock-data'
+import { Biome, DifficultySetting, HeroCharacter, UserAccount, UserCurrency } from '@/models'
+import { getAvailableBiomes, getAvailableDifficulties, getStartingHeroes } from '@/mock-data'
 
 export interface GameState {
   user: UserAccount | null
@@ -13,6 +13,11 @@ export interface GameState {
   setBiomes: (biomes: Biome[]) => void
   selectedBiome: Biome | null
   setSelectedBiome: (biome: Biome | null) => void
+  difficultySettings: DifficultySetting[]
+  setDifficultySettings: (difficulties: DifficultySetting[]) => void
+  selectedDifficultySetting: DifficultySetting | null
+  setSelectedDifficultySetting: (difficulty: DifficultySetting | null) => void
+
 
 }
 
@@ -27,4 +32,8 @@ export const useGameState = create<GameState>((set) => ({
   setBiomes: (biomes: Biome[]) => set({ biomes }),
   selectedBiome: null,
   setSelectedBiome: (biome) => set({ selectedBiome: biome }),
+  difficultySettings: getAvailableDifficulties(),
+  setDifficultySettings: difficulties => set({ difficultySettings: difficulties }),
+  selectedDifficultySetting: null,
+  setSelectedDifficultySetting: difficulty => set({ selectedDifficultySetting: difficulty }),
 }))
