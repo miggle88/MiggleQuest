@@ -11,6 +11,9 @@ export interface GameState {
   setHeroes: (heroes: HeroCharacter[]) => void
   biomes: Biome[]
   setBiomes: (biomes: Biome[]) => void
+  selectedBiome: Biome | null
+  setSelectedBiome: (biome: Biome | null) => void
+
 }
 
 export const useGameState = create<GameState>((set) => ({
@@ -22,4 +25,6 @@ export const useGameState = create<GameState>((set) => ({
   setHeroes: (heroes) => set({ heroes }),
   biomes: getAvailableBiomes(),
   setBiomes: (biomes: Biome[]) => set({ biomes }),
+  selectedBiome: null,
+  setSelectedBiome: (biome) => set({ selectedBiome: biome }),
 }))

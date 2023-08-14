@@ -6,15 +6,15 @@ import { useGameState } from '@/store'
 
 export default function Adventure() {
 
-  const { biomes } = useGameState()
+  const { biomes, selectedBiome, setSelectedBiome } = useGameState()
 
   return (
     <DestinationLayout title={'Adventure'} previousHref={'/town'}>
       <div className={'flex flex-col p-2'}>
         <div className={'text-2xl font-bold text-center'}>Select Biome</div>
         <div className={'py-2'}/>
-        <BiomeSelector biomes={biomes} onSelected={(biome) => {
-          console.log('biome was selected', biome)
+        <BiomeSelector biomes={biomes} selectedBiome={selectedBiome} onSelected={(biome) => {
+          setSelectedBiome(biome)
 
         }}/>
       </div>
