@@ -8,18 +8,29 @@ export interface DifficultyCardProps {
 }
 
 export default function DifficultyCard(props: DifficultyCardProps) {
-
   const difficulty = props.difficulty
-  const borderColor = props.selected ? 'border-amber-500' : 'border-neutral-500'
-  const hoverColor = props.selected ? 'hover:bg-amber-900' : 'hover:bg-neutral-800'
+
+  const borderColor =
+    props.disabled ? 'border-red-400'
+      : props.selected ? 'border-amber-500' : 'border-neutral-500'
+
+  const hoverColor =
+    props.disabled ? 'hover:bg-red-950'
+      : props.selected ? 'hover:bg-amber-900' : 'hover:bg-neutral-800'
+
+  const textColor =
+    props.disabled ? 'text-red-400'
+      : props.selected ? 'text-amber-500' : 'text-white'
+
+  const cursor = props.disabled ? 'cursor-not-allowed' : ''
 
   return (
-    <div className={`border-2 ${borderColor} p-2`}>
-      <button className={`w-full h-full ${hoverColor}`}
+    <div className={`border-2 ${borderColor}`}>
+      <button className={`w-full h-full ${hoverColor} disabled:text-red-400 ${cursor} p-2`}
               disabled={props.disabled}
               onClick={() => props.onClick && props.onClick()}>
         <div className={'flex flex-col w-full'}>
-          <div className={'text-2xl font-bold'}>{difficulty.name}</div>
+          <div className={`text-2xl ${textColor} font-bold`}>{difficulty.name}</div>
           <div className={'text-2xl'}>{difficulty.description}</div>
           <div className={'py-2'}/>
           <div>

@@ -13,7 +13,7 @@ export default function HeroCard(props: HeroCardProps) {
       <div className={'flex flex-col place-content-center p-2'}>
         <div className={'flex flex-row'}>
           <div className={'grow text-lg'}>{hero.characterName}</div>
-          <div className={'grow text-lg'}>{hero.class[0].toUpperCase() + hero.class.slice(1).toLowerCase()}</div>
+          <div className={'grow text-lg'}>{formatHeroClass(hero.class)}</div>
           <div><span className={'font-bold'}>Level: </span>{hero.level}</div>
         </div>
         <div className={'py-2'}/>
@@ -43,4 +43,8 @@ const getHeroClassBorder = (heroClass: HeroClass) => {
     default:
       return 'border-neutral-300'
   }
+}
+
+function formatHeroClass(heroClass: HeroClass): string {
+  return heroClass[0].toUpperCase() + heroClass.slice(1).toLowerCase()
 }

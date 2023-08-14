@@ -23,7 +23,7 @@ export function getAvailableBiomes(): Biome[] {
       id: '4',
       name: 'Swamp',
       description: 'swamp ass',
-      startingLevel: 1,
+      startingLevel: 5,
     },
   ]
 }

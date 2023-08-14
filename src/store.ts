@@ -17,8 +17,8 @@ export interface GameState {
   setDifficultySettings: (difficulties: DifficultySetting[]) => void
   selectedDifficultySetting: DifficultySetting | null
   setSelectedDifficultySetting: (difficulty: DifficultySetting | null) => void
-
-
+  selectedParty: (HeroCharacter | null)[]
+  setSelectedParty: (party: (HeroCharacter | null)[]) => void
 }
 
 export const useGameState = create<GameState>((set) => ({
@@ -36,4 +36,6 @@ export const useGameState = create<GameState>((set) => ({
   setDifficultySettings: difficulties => set({ difficultySettings: difficulties }),
   selectedDifficultySetting: null,
   setSelectedDifficultySetting: difficulty => set({ selectedDifficultySetting: difficulty }),
+  selectedParty: [null, null, null, null],
+  setSelectedParty: (party) => set({ selectedParty: party }),
 }))
