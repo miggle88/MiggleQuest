@@ -115,5 +115,28 @@ export function getStartingHeroes(): HeroCharacter[] {
       intelligence: 4,
       hitPoints: 16,
     },
+    {
+      ...base, characterName: 'Jerry',
+      class: HeroClass.Fighter,
+      strength: 4,
+      hitPoints: 20,
+    },
+    {
+      ...base, characterName: 'Argus',
+      class: HeroClass.Rogue,
+      dexterity: 4,
+    },
+    {
+      ...base, characterName: 'Enum',
+      class: HeroClass.Cleric,
+      intelligence: 4,
+      hitPoints: 16,
+    },
+    {
+      ...base, characterName: 'Ersoc',
+      class: HeroClass.Wizard,
+      intelligence: 4,
+      hitPoints: 12,
+    },
   ]
 }

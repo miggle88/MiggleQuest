@@ -3,7 +3,8 @@ import Conditional from '@components/layout/Conditional'
 
 export interface PartySlotProps {
   selectedHero: HeroCharacter | null
-  onHeroChanged?: (hero: HeroCharacter | null) => void
+  onHeroRequested?: () => void
+  onHeroRemoved?: () => void
 }
 
 export default function PartySlot(props: PartySlotProps) {
@@ -16,14 +17,14 @@ export default function PartySlot(props: PartySlotProps) {
           <Conditional condition={!props.selectedHero}>
             <div className={'text-center text-gray-500'}>Click to add</div>
             <button className={'h-full peer bg-neutral-900 hover:bg-neutral-800 active:bg-neutral-700'}
-                    onClick={() => props.onHeroChanged && props.onHeroChanged(null)}>
+                    onClick={() => props.onHeroRequested && props.onHeroRequested()}>
               <div className={'text-6xl font-bold'}>+</div>
             </button>
           </Conditional>
           <Conditional condition={!!props.selectedHero}>
             <div className={'text-gray-500 text-center'}>Click to remove</div>
             <button className={'h-full bg-neutral-900 hover:bg-neutral-800 active:bg-neutral-700'}
-                    onClick={() => props.onHeroChanged && props.onHeroChanged(null)}>
+                    onClick={() => props.onHeroRemoved && props.onHeroRemoved()}>
               <div className={'h-full flex flex-col p-2'}>
                 <div className={'text-2xl text-center font-bold'}>{props.selectedHero?.characterName}</div>
                 <div>{props.selectedHero?.hitPoints} HP</div>
