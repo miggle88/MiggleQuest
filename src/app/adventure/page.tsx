@@ -18,7 +18,12 @@ export default function Adventure() {
   } = useGameState()
 
   const hasEnoughHeroes = selectedParty.filter((hero) => hero != null).length >= 2
-  const isReady = selectedBiome != null && selectedDifficultySetting != null && hasEnoughHeroes
+  const meetsLevelRequirements = selectedParty.every((hero) => !hero || hero.level >= (selectedBiome?.startingLevel ?? 1))
+
+  const isReady = selectedBiome != null
+    && selectedDifficultySetting != null
+    && hasEnoughHeroes
+    && meetsLevelRequirements
 
   useEffect(() => {
     setSelectedParty([heroes[0], heroes[1], heroes[2], heroes[3]])
@@ -55,22 +60,24 @@ export default function Adventure() {
 
       <PartySelector availableHeroes={availableHeroes}
                      selectedParty={selectedParty}
-                     onPartyChanged={(party) => {
-                       console.log('Party selector reports a new party', party)
-                       setSelectedParty(party)
-                     }}/>
+                     onPartyChanged={(party) => setSelectedParty(party)}/>
       <div className={'text-center py-2'}>
         <Conditional condition={isReady}>
           <div className={'text-xl font-bold'}>You are all already to go on your adventure. Best of luck!</div>
         </Conditional>
         <Conditional condition={!selectedBiome}>
-          <div className={'text-xl text-red-400'}>You must select a biome to adventure.</div>
+          <div className={'text-lg lg:text-xl text-red-400'}>You must select a biome.</div>
         </Conditional>
         <Conditional condition={!selectedDifficultySetting}>
-          <div className={'text-xl text-red-400'}>You must select a difficulty to adventure.</div>
+          <div className={'text-lg lg:text-xl text-red-400'}>You must select a difficulty.</div>
         </Conditional>
         <Conditional condition={!hasEnoughHeroes}>
-          <div className={'text-xl text-red-400'}>You must select at least two heroes to adventure.</div>
+          <div className={'text-lg lg:text-xl text-red-400'}>You must select at least two heroes.</div>
+        </Conditional>
+        <Conditional condition={!meetsLevelRequirements}>
+          <div className={'text-lg lg:text-xl text-red-400'}>One or more heroes do not meet the minimum level
+            requirement.
+          </div>
         </Conditional>
         <div className={'py-2'}></div>
         <button
@@ -81,7 +88,6 @@ export default function Adventure() {
           <span>{isReady ? 'Proceed on Adventure' : 'Unable to Proceed'}</span>
         </button>
       </div>
-
     </DestinationLayout>
   )
 }
