@@ -1,19 +1,20 @@
-import { HeroCharacter, HeroClass } from '@/models'
+import { HeroCharacter } from '@/models'
+import { toTitleCase } from '@/utils/strings'
+import HeroBorder from '@components/common/HeroBorder'
 
 export interface HeroCardProps {
   hero: HeroCharacter
 }
 
 export default function HeroCard(props: HeroCardProps) {
-  const hero = props.hero
-  const borderColor = getHeroClassBorder(hero.class)
+  const { hero } = props
 
   return (
-    <div className={`${borderColor} border-2 rounded p-2`}>
-      <div className={'flex flex-col place-content-center p-2'}>
+    <HeroBorder hero={hero}>
+      <div className={'flex flex-col place-content-center p-4'}>
         <div className={'flex flex-row'}>
-          <div className={'grow text-lg'}>{hero.characterName}</div>
-          <div className={'grow text-lg'}>{formatHeroClass(hero.class)}</div>
+          <div className={'grow text-xl font-bold'}>{hero.characterName}</div>
+          <div className={'grow text-lg'}>{toTitleCase(hero.class)}</div>
           <div><span className={'font-bold'}>Level: </span>{hero.level}</div>
         </div>
         <div className={'py-2'}/>
@@ -26,25 +27,6 @@ export default function HeroCard(props: HeroCardProps) {
           <div><span className={'text-bold'}>Int: </span>{hero.intelligence}</div>
         </div>
       </div>
-    </div>
+    </HeroBorder>
   )
-}
-
-const getHeroClassBorder = (heroClass: HeroClass) => {
-  switch (heroClass as string) {
-    case HeroClass.Fighter:
-      return 'border-red-500'
-    case HeroClass.Rogue:
-      return 'border-sky-500'
-    case HeroClass.Cleric:
-      return 'border-green-600'
-    case HeroClass.Wizard:
-      return 'border-amber-500'
-    default:
-      return 'border-neutral-300'
-  }
-}
-
-function formatHeroClass(heroClass: HeroClass): string {
-  return heroClass[0].toUpperCase() + heroClass.slice(1).toLowerCase()
 }
