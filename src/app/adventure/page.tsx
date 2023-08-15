@@ -1,18 +1,17 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useGameState } from '@/store'
 import DestinationLayout from '@components/layout/DestinationLayout'
 import BiomeSelector from '@components/adventure/BiomeSelector'
 import DifficultySelector from '@components/adventure/DifficultySelector'
 import PartySelector from '@components/adventure/PartySelector'
-import { HeroCharacter } from '@/models'
-import { useEffect } from 'react'
 import Conditional from '@components/layout/Conditional'
 
 export default function Adventure() {
   const {
     biomes, difficultySettings,
-    heroes, selectedParty, setSelectedParty,
+    heroes, getAvailableHeroes, selectedParty, setSelectedParty,
     selectedBiome, setSelectedBiome,
     selectedDifficultySetting, setSelectedDifficultySetting,
   } = useGameState()
@@ -33,7 +32,7 @@ export default function Adventure() {
     console.log('Do not die!')
   }
 
-  const availableHeroes = getAvailableHeroes(heroes, selectedBiome?.startingLevel)
+  const availableHeroes = getAvailableHeroes(selectedBiome?.startingLevel)
   const highestHeroLevel = Math.max(...availableHeroes.map(hero => hero.level))
 
   return (
@@ -90,9 +89,4 @@ export default function Adventure() {
       </div>
     </DestinationLayout>
   )
-}
-
-function getAvailableHeroes(heroes: HeroCharacter[], minLevel = 1): HeroCharacter[] {
-  const now = new Date()
-  return heroes.filter(hero => hero.isAlive && hero.level >= minLevel && (!hero.nextAvailableAt || hero.nextAvailableAt <= now))
 }
