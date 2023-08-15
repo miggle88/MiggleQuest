@@ -56,19 +56,21 @@ export default function ActivityCard(props: ActivityCardProps) {
           </div>
         </ProgressBar>
         <div className={'py-2'}/>
-        <div className={'flex flex-row px-2'}>
-          <div className={'grow text-left text-2xl font-bold'}>{toTitleCase(activity.type)}</div>
-          <div className={'grow text-center text-2xl font-bold'}>{activity.biome.name}</div>
-          <div className={'grow text-right text-2xl font-bold'}>{activity.difficulty.name}</div>
+        <div className={'grid grid-cols-1 sm:grid-cols-3 px-2'}>
+          <div
+            className={'grow text-center sm:text-left text-lg sm:text-xl font-bold'}>{toTitleCase(activity.type)}</div>
+          <div className={'grow text-center text-lg sm:text-xl font-bold'}>{activity.biome.name}</div>
+          <div
+            className={'grow text-center sm:text-right text-lg sm:text-xl  font-bold'}>{activity.difficulty.name}</div>
         </div>
         <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-2'}>
           {party.map((hero) => {
             return (<div key={hero.id}>
               <HeroBorder hero={hero}>
-                <div className={'flex flex-row space-x-2 place-items-center p-2'}>
-                  <div className={'text-xl font-bold grow'}>{hero.characterName}</div>
-                  <div className={''}>{hero.level}</div>
-                  <div className={''}>{hero.class}</div>
+                <div className={'grid grid-cols-1 sm:grid-cols-2 gap-2 px-4 py-2'}>
+                  <div className={'text-left text-xl font-bold'}>{hero.characterName}</div>
+                  <div className={'text-xl'}><span>Level {hero.level} </span><span>{toTitleCase(hero.class)}</span>
+                  </div>
                 </div>
               </HeroBorder>
             </div>)

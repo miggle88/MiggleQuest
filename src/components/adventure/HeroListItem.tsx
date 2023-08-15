@@ -18,7 +18,7 @@ export default function HeroListItem(props: HeroListItemProps) {
             <div className={'flex flex-col grow'}>
               <div className={'text-xl font-bold'}>{hero.characterName}</div>
               <div>
-                <span>{hero.level} </span><span>{toTitleCase(hero.class)}</span>
+                <span>Level {hero.level} </span><span>{toTitleCase(hero.class)}</span>
               </div>
             </div>
             <div className={'text-right'}>HP: {hero.hitPoints}</div>
