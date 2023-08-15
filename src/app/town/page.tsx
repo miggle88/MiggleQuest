@@ -9,6 +9,7 @@ export default function Town() {
       <div className={'grid grid-cols-4 gap-4 p-16'}>
         <NavButton href={'/roster'}><span>Roster</span></NavButton>
         <NavButton href={'/adventure'}><span>Adventure</span></NavButton>
+        <NavButton href={'/activity'}><span>Activity Log</span></NavButton>
       </div>
 
     </DestinationLayout>

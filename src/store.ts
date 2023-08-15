@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Biome, DifficultySetting, HeroCharacter, UserAccount, UserCurrency } from '@/models'
+import { Activity, Biome, DifficultySetting, HeroCharacter, UserAccount, UserCurrency } from '@/models'
 import { getAvailableBiomes, getAvailableDifficulties, getStartingHeroes } from '@/mock-data'
 
 export interface GameState {
@@ -20,6 +20,9 @@ export interface GameState {
   setSelectedDifficultySetting: (difficulty: DifficultySetting | null) => void
   selectedParty: (HeroCharacter | null)[]
   setSelectedParty: (party: (HeroCharacter | null)[]) => void
+  activities: Activity[]
+  setActivities: (activities: Activity[]) => void
+  addActivity: (activity: Activity) => void
 }
 
 export const useGameState = create<GameState>((set, get) => ({
@@ -41,4 +44,7 @@ export const useGameState = create<GameState>((set, get) => ({
   setSelectedDifficultySetting: difficulty => set({ selectedDifficultySetting: difficulty }),
   selectedParty: [null, null, null, null],
   setSelectedParty: (party) => set({ selectedParty: party }),
+  activities: [],
+  setActivities: (activities) => set({ activities }),
+  addActivity: (activity) => set(state => ({ activities: [...state.activities, activity] })),
 }))
