@@ -18,12 +18,8 @@ export default function DifficultySelector(props: DifficultySelectorProps) {
                                  onClick={() => {
                                    props.onSelected && props.onSelected(difficulty)
                                  }}/>
-
-
         })}
-
       </div>
     </div>
-
   )
 }

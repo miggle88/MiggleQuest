@@ -1,17 +1,39 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useGameState } from '@/store'
 import DestinationLayout from '@components/layout/DestinationLayout'
 import BiomeSelector from '@components/adventure/BiomeSelector'
-import { useGameState } from '@/store'
 import DifficultySelector from '@components/adventure/DifficultySelector'
+import PartySelector from '@components/adventure/PartySelector'
+import Conditional from '@components/layout/Conditional'
 
 export default function Adventure() {
-
   const {
     biomes, difficultySettings,
+    heroes, getAvailableHeroes, selectedParty, setSelectedParty,
     selectedBiome, setSelectedBiome,
     selectedDifficultySetting, setSelectedDifficultySetting,
   } = useGameState()
+
+  const hasEnoughHeroes = selectedParty.filter((hero) => hero != null).length >= 2
+  const meetsLevelRequirements = selectedParty.every((hero) => !hero || hero.level >= (selectedBiome?.startingLevel ?? 1))
+
+  const isReady = selectedBiome != null
+    && selectedDifficultySetting != null
+    && hasEnoughHeroes
+    && meetsLevelRequirements
+
+  useEffect(() => {
+    setSelectedParty([heroes[0], heroes[1], heroes[2], heroes[3]])
+  }, [])
+
+  const proceedWithAdventure = () => {
+    console.log('Do not die!')
+  }
+
+  const availableHeroes = getAvailableHeroes(selectedBiome?.startingLevel)
+  const highestHeroLevel = Math.max(...availableHeroes.map(hero => hero.level))
 
   return (
     <DestinationLayout title={'Adventure'} previousHref={'/town'}>
@@ -21,6 +43,7 @@ export default function Adventure() {
         <div className={'py-2'}/>
         <BiomeSelector biomes={biomes}
                        selectedBiome={selectedBiome}
+                       characterLevel={highestHeroLevel}
                        onSelected={(biome) => setSelectedBiome(biome)}/>
       </div>
       <div className={'py-2'}/>
@@ -30,7 +53,40 @@ export default function Adventure() {
                           selectedDifficulty={selectedDifficultySetting}
                           onSelected={(difficulty) => setSelectedDifficultySetting(difficulty)}/>
 
-    </DestinationLayout>
+      <div className={'py-2'}/>
+      <div className={'text-2xl font-bold text-center'}>Party Select</div>
+      <div className={'py-2'}/>
 
+      <PartySelector availableHeroes={availableHeroes}
+                     selectedParty={selectedParty}
+                     onPartyChanged={(party) => setSelectedParty(party)}/>
+      <div className={'text-center py-2'}>
+        <Conditional condition={isReady}>
+          <div className={'text-xl font-bold'}>You are all already to go on your adventure. Best of luck!</div>
+        </Conditional>
+        <Conditional condition={!selectedBiome}>
+          <div className={'text-lg lg:text-xl text-red-400'}>You must select a biome.</div>
+        </Conditional>
+        <Conditional condition={!selectedDifficultySetting}>
+          <div className={'text-lg lg:text-xl text-red-400'}>You must select a difficulty.</div>
+        </Conditional>
+        <Conditional condition={!hasEnoughHeroes}>
+          <div className={'text-lg lg:text-xl text-red-400'}>You must select at least two heroes.</div>
+        </Conditional>
+        <Conditional condition={!meetsLevelRequirements}>
+          <div className={'text-lg lg:text-xl text-red-400'}>One or more heroes do not meet the minimum level
+            requirement.
+          </div>
+        </Conditional>
+        <div className={'py-2'}></div>
+        <button
+          className={'bg-neutral-900 border-2 rounded-2xl border-green-400 text-green-400 hover:bg-green-950 active:bg-green-900 ' +
+            'disabled:bg-red-950 disabled:border-red-400 disabled:text-red-400 text-xl px-4 py-2'}
+          disabled={!isReady}
+          onClick={() => proceedWithAdventure()}>
+          <span>{isReady ? 'Proceed on Adventure' : 'Unable to Proceed'}</span>
+        </button>
+      </div>
+    </DestinationLayout>
   )
 }
