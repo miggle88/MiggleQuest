@@ -4,7 +4,7 @@ import BiomeCard from '@components/adventure/BiomeCard'
 export interface BiomeSelectorProps {
   biomes: Biome[]
   selectedBiome: Biome | null
-  characterLevel?: number
+  characterLevel: number
   onSelected?: (biome: Biome) => void
 }
 
@@ -15,7 +15,7 @@ export default function BiomeSelector(props: BiomeSelectorProps) {
         {props.biomes.map((biome) => {
           return <BiomeCard key={biome.id}
                             biome={biome}
-                            disabled={biome.startingLevel > (props.characterLevel ?? 1)}
+                            disabled={biome.startingLevel > (props.characterLevel)}
                             selected={biome.id === props.selectedBiome?.id}
                             onClick={() => {
                               props.onSelected && props.onSelected(biome)

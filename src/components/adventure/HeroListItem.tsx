@@ -10,7 +10,8 @@ export default function HeroListItem(props: HeroListItemProps) {
   const borderColor = getHeroClassBorder(hero.class)
 
   return (
-    <div className={`w-[160px] md:w-[240px] lg:w-[360px] bg-gray-700 border-2 ${borderColor}`}>
+    <div
+      className={`w-[160px] md:w-[240px] lg:w-[360px] bg-gray-800 border-2 ${borderColor} hover:bg-gray-700 active:bg-gray-600 rounded`}>
       <button className={'w-full h-full'} onClick={() => props.onClick && props.onClick()}>
         <div className={'flex flex-row text-left p-2'}>
           <div className={'flex flex-col grow'}>

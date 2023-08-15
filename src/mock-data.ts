@@ -9,21 +9,21 @@ export function getAvailableBiomes(): Biome[] {
   },
     {
       id: '2',
-      name: 'portal',
-      description: 'portal realm - dangerous',
-      startingLevel: 1,
+      name: 'Hideout',
+      description: 'humanoid fun',
+      startingLevel: 3,
     },
     {
       id: '3',
-      name: 'Hideout',
-      description: 'humanoid fun',
-      startingLevel: 1,
-    },
-    {
-      id: '4',
       name: 'Swamp',
       description: 'swamp ass',
       startingLevel: 5,
+    },
+    {
+      id: '4',
+      name: 'portal',
+      description: 'portal realm - dangerous',
+      startingLevel: 10,
     },
   ]
 }
@@ -120,23 +120,27 @@ export function getStartingHeroes(): HeroCharacter[] {
       class: HeroClass.Fighter,
       strength: 4,
       hitPoints: 20,
+      level: 5,
     },
     {
       ...base, characterName: 'Argus',
       class: HeroClass.Rogue,
       dexterity: 4,
+      level: 5,
     },
     {
       ...base, characterName: 'Enum',
       class: HeroClass.Cleric,
       intelligence: 4,
       hitPoints: 16,
+      level: 5,
     },
     {
       ...base, characterName: 'Ersoc',
       class: HeroClass.Wizard,
       intelligence: 4,
       hitPoints: 12,
+      level: 5,
     },
   ]
 }
