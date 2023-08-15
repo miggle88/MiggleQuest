@@ -3,9 +3,9 @@
 import { useEffect } from 'react'
 import { useGameState } from '@/store'
 import DestinationLayout from '@components/layout/DestinationLayout'
-import { Activity, ActivityType } from '@/models'
-import addSeconds from 'date-fns/addSeconds'
 import ActivityCard from '@components/activity/ActivityCard'
+import { Activity, ActivityType } from '@/models'
+import { addSeconds } from 'date-fns'
 
 export default function Activity() {
   const { activities, setActivities, biomes, difficultySettings, heroes } = useGameState()
