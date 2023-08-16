@@ -1,4 +1,4 @@
-import { Biome, DifficultySetting, HeroCharacter, HeroClass } from '@/models'
+import { Biome, DifficultySetting, HeroCharacter, HeroClass, HeroStatus } from '@/models'
 
 export function getAvailableBiomes(): Biome[] {
   return [{
@@ -86,7 +86,7 @@ export function getStartingHeroes(): HeroCharacter[] {
     dexterity: 3,
     intelligence: 3,
     constitution: 3,
-    isAlive: true,
+    status: HeroStatus.Available,
     hiredAt: new Date(),
   }
   return [

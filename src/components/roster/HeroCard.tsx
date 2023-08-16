@@ -1,4 +1,4 @@
-import { HeroCharacter } from '@/models'
+import { HeroCharacter, HeroStatus } from '@/models'
 import { toTitleCase } from '@/utils/strings'
 import HeroBorder from '@components/common/HeroBorder'
 
@@ -19,7 +19,8 @@ export default function HeroCard(props: HeroCardProps) {
         </div>
         <div className={'py-2'}/>
         <div className={'grow text-center'}><span className={'font-bold'}>Hit Points: </span>{hero.hitPoints}</div>
-        <div className={'py-2'}/>
+        <div className={'text-center'}><span className={'font-bold'}>{hero.status}</span></div>
+        <div className={'py-2'}></div>
         <div className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-center'}>
           <div><span className={'text-bold'}>Str: </span>{hero.strength}</div>
           <div><span className={'text-bold'}>Con: </span>{hero.constitution}</div>
