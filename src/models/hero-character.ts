@@ -5,6 +5,13 @@ export enum HeroClass {
   Cleric = 'CLERIC'
 }
 
+export enum HeroStatus {
+  Available = 'ALIVE',
+  Resting = 'RESTING',
+  Busy = 'BUSY',
+  Dead = 'DEAD'
+}
+
 export type HeroCharacter = {
   id: string
   accountId: string
@@ -19,8 +26,10 @@ export type HeroCharacter = {
   dexterity: number
   intelligence: number
   constitution: number
-  isAlive: boolean
+  status: HeroStatus
   hiredAt: Date
   diedAt?: Date
   nextAvailableAt?: Date
+
+
 }

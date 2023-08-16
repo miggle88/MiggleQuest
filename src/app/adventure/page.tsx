@@ -1,20 +1,32 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useGameState } from '@/store'
 import DestinationLayout from '@components/layout/DestinationLayout'
 import BiomeSelector from '@components/adventure/BiomeSelector'
 import DifficultySelector from '@components/adventure/DifficultySelector'
 import PartySelector from '@components/adventure/PartySelector'
 import Conditional from '@components/layout/Conditional'
+import { Activity, ActivityType, HeroCharacter, HeroStatus } from '@/models'
+import { v4 as uuid } from 'uuid'
+import { addSeconds } from 'date-fns'
+import { useEffect } from 'react'
 
 export default function Adventure() {
+  const { push } = useRouter()
   const {
     biomes, difficultySettings,
-    heroes, getAvailableHeroes, selectedParty, setSelectedParty,
+    getAvailableHeroes, selectedParty, setSelectedParty,
     selectedBiome, setSelectedBiome,
     selectedDifficultySetting, setSelectedDifficultySetting,
+    addActivity,
   } = useGameState()
+
+  useEffect(() => {
+    setSelectedBiome(null)
+    setSelectedDifficultySetting(null)
+    setSelectedParty([null, null, null, null])
+  }, [])
 
   const hasEnoughHeroes = selectedParty.filter((hero) => hero != null).length >= 2
   const meetsLevelRequirements = selectedParty.every((hero) => !hero || hero.level >= (selectedBiome?.startingLevel ?? 1))
@@ -24,13 +36,32 @@ export default function Adventure() {
     && hasEnoughHeroes
     && meetsLevelRequirements
 
-  useEffect(() => {
-    setSelectedParty([heroes[0], heroes[1], heroes[2], heroes[3]])
-  }, [])
-
   const proceedWithAdventure = () => {
-    console.log('Do not die!')
+    if (!isReady) {
+      return
+    }
+
+    const now = new Date()
+    const activity: Activity = {
+      id: uuid(),
+      type: ActivityType.Adventure,
+      biome: selectedBiome,
+      difficulty: selectedDifficultySetting,
+      party: selectedParty.filter((hero) => hero != null) as HeroCharacter[],
+      startedAt: now,
+      completedAt: addSeconds(now, selectedDifficultySetting!.completionSeconds),
+    }
+
+    // Add activity and show activity log
+    addActivity(activity)
+
+    for (const hero of activity.party) {
+      hero.status = HeroStatus.Busy
+    }
+
+    push('/activity')
   }
+
 
   const availableHeroes = getAvailableHeroes(selectedBiome?.startingLevel)
   const highestHeroLevel = Math.max(...availableHeroes.map(hero => hero.level))

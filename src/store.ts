@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Activity, Biome, DifficultySetting, HeroCharacter, UserAccount, UserCurrency } from '@/models'
+import { Activity, Biome, DifficultySetting, HeroCharacter, HeroStatus, UserAccount, UserCurrency } from '@/models'
 import { getAvailableBiomes, getAvailableDifficulties, getStartingHeroes } from '@/mock-data'
 
 export interface GameState {
@@ -32,7 +32,7 @@ export const useGameState = create<GameState>((set, get) => ({
   setUserCurrency: (currency) => set({ userCurrency: currency }),
   heroes: getStartingHeroes(),
   getAvailableHeroes: (minLevel = 1) =>
-    get().heroes.filter(hero => hero.isAlive && hero.level >= minLevel && (!hero.nextAvailableAt || hero.nextAvailableAt <= new Date())),
+    get().heroes.filter(hero => hero.status === HeroStatus.Available && hero.level >= minLevel && (!hero.nextAvailableAt || hero.nextAvailableAt <= new Date())),
   setHeroes: (heroes) => set({ heroes }),
   biomes: getAvailableBiomes(),
   setBiomes: (biomes: Biome[]) => set({ biomes }),

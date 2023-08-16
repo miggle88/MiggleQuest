@@ -9,22 +9,7 @@ import { addSeconds } from 'date-fns'
 
 export default function Activity() {
   const { activities, setActivities, biomes, difficultySettings, heroes } = useGameState()
-
-  useEffect(() => {
-    const now = new Date()
-    const biome = biomes[0]
-    const difficulty = difficultySettings[1]
-    const dummyActivity: Activity = {
-      id: '1',
-      type: ActivityType.Adventure,
-      biome,
-      difficulty,
-      party: heroes.slice(0, 4),
-      startedAt: now,
-      completedAt: addSeconds(now, difficulty.completionSeconds),
-    }
-    setActivities([dummyActivity])
-  }, [])
+  
 
   const sortedActivities = [...activities].sort(activitySorter)
 
