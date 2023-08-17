@@ -16,7 +16,10 @@ export default function HeroCard(props: HeroCardProps) {
         <div className={'flex flex-row'}>
           <div className={'grow text-xl font-bold'}>{hero.characterName}</div>
           <div className={'grow text-lg'}>{toTitleCase(hero.class)}</div>
-          <div><span className={'font-bold'}>Level: </span>{hero.level}</div>
+          <div className={'flex flex-col'}>
+            <div><span className={'font-bold'}>Level: </span>{hero.level}</div>
+            <div><span className={'font-bold'}>EXP:</span> {hero.experience}</div>
+          </div>
         </div>
         <div className={'py-2'}/>
         <div className={'grow text-center'}><span className={'font-bold'}>Hit Points: </span>{hero.hitPoints}</div>

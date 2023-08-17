@@ -21,7 +21,10 @@ export default function HeroListItem(props: HeroListItemProps) {
                 <span>Level {hero.level} </span><span>{toTitleCase(hero.class)}</span>
               </div>
             </div>
-            <div className={'text-right'}>HP: {hero.hitPoints}</div>
+            <div className={'flex flex-col space-y-1'}>
+              <div className={'text-right'}>HP: {hero.hitPoints}</div>
+              <div className={'text-right'}>EXP: {hero.experience}</div>
+            </div>
           </div>
         </button>
       </div>

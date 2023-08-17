@@ -12,13 +12,13 @@ import PartySelector from '@components/adventure/PartySelector'
 import ConsiderText from '@components/adventure/ConsiderText'
 import Conditional from '@components/layout/Conditional'
 import { Activity, ActivityType, HeroCharacter } from '@/models'
-import { calcAdventureExperience, calcAdventureSuccessChance } from '@/utils/formulas'
+import { calcExperienceReward, calcGoldReward, calcSuccessChance } from '@/utils/formulas'
 
 export default function Adventure() {
   const { push } = useRouter()
   const [successChance, setSuccessChance] = useState(0)
-  const [expEstimate, setExpEstimate] = useState(0)
-  const [goldEstimate, setGoldEstimate] = useState(0)
+  const [expReward, setExpReward] = useState(0)
+  const [goldReward, setGoldReward] = useState(0)
 
   const {
     biomes, difficultySettings,
@@ -28,11 +28,43 @@ export default function Adventure() {
     addActivity,
   } = useGameState()
 
-  // useEffect(() => {
-  //   setSelectedBiome(null)
-  //   setSelectedDifficultySetting(null)
-  //   setSelectedParty([null, null, null, null])
-  // }, [])
+  const resetState = () => {
+    setSelectedBiome(null)
+    setSelectedDifficultySetting(null)
+    setSelectedParty([null, null, null, null])
+  }
+
+  const getActivity = (): Activity => {
+    const now = new Date()
+    return {
+      id: uuid(),
+      type: ActivityType.Adventure,
+      biome: selectedBiome!,
+      difficulty: selectedDifficultySetting!,
+      party: selectedParty.filter((hero) => hero != null) as HeroCharacter[],
+      startedAt: now,
+      completedAt: addSeconds(now, selectedDifficultySetting!.completionSeconds),
+    }
+  }
+
+  const proceedWithAdventure = () => {
+    if (!isReady) {
+      return
+    }
+
+    const activity = getActivity()
+
+    // Set hero recovery time in the future
+    for (const hero of activity.party) {
+      hero.nextAvailableAt = addSeconds(activity.completedAt, 5)
+    }
+
+    // Add activity and show activity log
+    addActivity(activity)
+    push('/activity')
+  }
+
+  useEffect(() => resetState(), [])
 
   useEffect(() => {
     // If not ready, do not re-calculate success chance
@@ -43,27 +75,20 @@ export default function Adventure() {
 
     // If any hero is below the minimum level, assume 0% success
     const { startingLevel, baseGold } = selectedBiome
-    const { levelModifier, experienceModifier, goldModifier } = selectedDifficultySetting
 
     if (heroesInParty.some(hero => hero.level < startingLevel)) {
       setSuccessChance(0)
-      setExpEstimate(0)
-      setGoldEstimate(0)
+      setExpReward(0)
+      setGoldReward(0)
       return
     }
 
-    // Calculate the success chance for the party
-    const estimatedChance = calcAdventureSuccessChance(startingLevel, levelModifier, heroesInParty)
-    setSuccessChance(estimatedChance)
+    const activity = getActivity()
 
-    // Calculate the experience estimate for the party
-    const exp = calcAdventureExperience(startingLevel, heroesInParty)
-    const totalExp = Math.ceil(exp * experienceModifier)
-    setExpEstimate(totalExp)
-
-    // Calculate the gold estimate for the biome
-    const gold = Math.ceil(baseGold * goldModifier)
-    setGoldEstimate(gold)
+    // Calculate the success chance, exp and gold rewards for the activity
+    setSuccessChance(calcSuccessChance(activity))
+    setExpReward(calcExperienceReward(activity))
+    setGoldReward(calcGoldReward(activity))
   }, [selectedBiome, selectedDifficultySetting, selectedParty])
 
   const selectedHeroCount = selectedParty.filter((hero) => hero != null).length
@@ -76,32 +101,6 @@ export default function Adventure() {
     && selectedDifficultySetting != null
     && selectedHeroCount >= 2
     && meetsLevelRequirements
-
-  const proceedWithAdventure = () => {
-    if (!isReady) {
-      return
-    }
-
-    const now = new Date()
-    const activity: Activity = {
-      id: uuid(),
-      type: ActivityType.Adventure,
-      biome: selectedBiome,
-      difficulty: selectedDifficultySetting,
-      party: selectedParty.filter((hero) => hero != null) as HeroCharacter[],
-      startedAt: now,
-      completedAt: addSeconds(now, selectedDifficultySetting!.completionSeconds),
-    }
-
-    // Set hero recovery time in the future
-    for (const hero of activity.party) {
-      hero.nextAvailableAt = addSeconds(activity.completedAt, 5)
-    }
-
-    // Add activity and show activity log
-    addActivity(activity)
-    push('/activity')
-  }
 
   return (
     <DestinationLayout title={'Adventure'} previousHref={'/town'}>
@@ -138,11 +137,12 @@ export default function Adventure() {
             <div className={'flex flex-row self-center place-items-center space-x-2'}>
               <ConsiderText successChance={successChance}/>
               <div
-                className={'text-lg md:text-xl text-center font-bold text-green-400 border-2 border-green-500 rounded p-2'}>+{expEstimate} Party
-                EXP
+                className={'text-md sm:text-lg md:text-xl text-center border-2 border-green-500 rounded p-2'}>
+                <span className={'font-bold text-green-400'}>+{expReward} Party EXP</span>
               </div>
               <div
-                className={'text-lg md:text-xl text-center font-bold text-yellow-300 border-2 border-yellow-400 rounded p-2'}>+{goldEstimate} Gold
+                className={'text-md sm:text-lg md:text-xl text-center border-2 border-yellow-400 rounded p-2'}>
+                <span className={'font-bold text-yellow-300'}>+{goldReward} Gold</span>
               </div>
             </div>
           </div>

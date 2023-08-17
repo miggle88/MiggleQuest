@@ -33,7 +33,7 @@ export default function ConsiderText(props: ConsiderTextProps) {
 
   return (
     <div className={`min-w-sm max-w-lg border-2 ${message.color} rounded px-6 py-2`}>
-      <div className={'text-center text-xl font-bold'}><span>{message.message}</span></div>
+      <div className={'text-center text-md sm:text-lg lg:text-xl font-bold'}><span>{message.message}</span></div>
     </div>
   )
 }
