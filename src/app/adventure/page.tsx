@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGameState } from '@/store'
 import DestinationLayout from '@components/layout/DestinationLayout'
@@ -7,10 +8,9 @@ import BiomeSelector from '@components/adventure/BiomeSelector'
 import DifficultySelector from '@components/adventure/DifficultySelector'
 import PartySelector from '@components/adventure/PartySelector'
 import Conditional from '@components/layout/Conditional'
-import { Activity, ActivityType, HeroCharacter, HeroStatus } from '@/models'
+import { Activity, ActivityType, HeroCharacter } from '@/models'
 import { v4 as uuid } from 'uuid'
 import { addSeconds } from 'date-fns'
-import { useEffect } from 'react'
 
 export default function Adventure() {
   const { push } = useRouter()
@@ -52,13 +52,13 @@ export default function Adventure() {
       completedAt: addSeconds(now, selectedDifficultySetting!.completionSeconds),
     }
 
-    // Add activity and show activity log
-    addActivity(activity)
-
+    // Set hero recovery time in the future
     for (const hero of activity.party) {
-      hero.status = HeroStatus.Busy
+      hero.nextAvailableAt = addSeconds(activity.completedAt, 5)
     }
 
+    // Add activity and show activity log
+    addActivity(activity)
     push('/activity')
   }
 

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Activity, Biome, DifficultySetting, HeroCharacter, HeroStatus, UserAccount, UserCurrency } from '@/models'
+import { Activity, Biome, DifficultySetting, HeroCharacter, UserAccount, UserCurrency } from '@/models'
 import { getAvailableBiomes, getAvailableDifficulties, getStartingHeroes } from '@/mock-data'
 
 export interface GameState {
@@ -23,6 +23,7 @@ export interface GameState {
   activities: Activity[]
   setActivities: (activities: Activity[]) => void
   addActivity: (activity: Activity) => void
+  removeActivity: (id: string) => void
 }
 
 export const useGameState = create<GameState>((set, get) => ({
@@ -32,7 +33,7 @@ export const useGameState = create<GameState>((set, get) => ({
   setUserCurrency: (currency) => set({ userCurrency: currency }),
   heroes: getStartingHeroes(),
   getAvailableHeroes: (minLevel = 1) =>
-    get().heroes.filter(hero => hero.status === HeroStatus.Available && hero.level >= minLevel && (!hero.nextAvailableAt || hero.nextAvailableAt <= new Date())),
+    get().heroes.filter(hero => !hero.isDead && hero.level >= minLevel && (!hero.nextAvailableAt || hero.nextAvailableAt <= new Date())),
   setHeroes: (heroes) => set({ heroes }),
   biomes: getAvailableBiomes(),
   setBiomes: (biomes: Biome[]) => set({ biomes }),
@@ -47,4 +48,5 @@ export const useGameState = create<GameState>((set, get) => ({
   activities: [],
   setActivities: (activities) => set({ activities }),
   addActivity: (activity) => set(state => ({ activities: [...state.activities, activity] })),
+  removeActivity: (id) => set(state => ({ activities: state.activities.filter((a) => a.id !== id) })),
 }))

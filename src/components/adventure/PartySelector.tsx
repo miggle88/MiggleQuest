@@ -49,7 +49,8 @@ export default function PartySelector(props: PartySelectorProps) {
     <div className={'flex flex-col p-2'}>
       <DialogModal show={showHeroModal} onDismiss={() => setShowHeroModal(false)}>
         <HeroSelector heroes={heroesToPickFrom}
-                      onHeroSelected={(hero) => handleHeroSelected(hero)}/>
+                      onHeroSelected={(hero) => handleHeroSelected(hero)}
+                      onCancel={() => setShowHeroModal(false)}/>
       </DialogModal>
       <div className={'text-center text-md lg:text-lg'}>Select between two through four party members that meet the
         minimum level

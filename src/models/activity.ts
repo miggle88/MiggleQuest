@@ -14,4 +14,5 @@ export type Activity = {
   party: HeroCharacter[]
   startedAt: Date
   completedAt: Date
+  claimedAt?: Date
 }

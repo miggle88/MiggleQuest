@@ -1,5 +1,6 @@
 import { Biome } from '@/models'
 import { text } from 'stream/consumers'
+import Conditional from '@components/layout/Conditional'
 
 export interface BiomeCardProps {
   biome: Biome
@@ -35,6 +36,9 @@ export default function BiomeCard(props: BiomeCardProps) {
           <div className={'text-xl'}>{biome.description}</div>
           <div className={'py-2'}/>
           <div><span className={'font-bold'}>Level Req: </span>{biome.startingLevel}+</div>
+          <Conditional condition={props.disabled ?? false}>
+            <div>You have no available heroes within the level range</div>
+          </Conditional>
         </div>
       </button>
     </div>
