@@ -18,7 +18,7 @@ export default function HeroSelector(props: HeroSelectorProps) {
   const borderColor = props.heroes.length > 0 ? 'border-neutral-500' : 'border-red-400'
 
   return (
-    <div className={`min-w-[200px] min-h-[100px] bg-neutral-800 border-2 ${borderColor} p-6`}>
+    <div className={`min-w-[200px] min-h-[100px] bg-neutral-900 border-2 ${borderColor} p-6`}>
       <div className={'flex flex-col place-items-center'}>
         <div className={'text-xl font-bold text-center'}>Available Heroes</div>
         <div className={'h-[2px] w-full bg-neutral-400 my-2'}/>
@@ -29,7 +29,7 @@ export default function HeroSelector(props: HeroSelectorProps) {
         </Conditional>
 
         <Conditional condition={props.heroes.length > 0}>
-          <div className={'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1'}>
+          <div className={'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'}>
             {props.heroes.map((hero) => {
               return <HeroListItem key={hero.id}
                                    hero={hero}

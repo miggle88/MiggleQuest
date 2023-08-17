@@ -1,29 +1,34 @@
 import { Biome, DifficultySetting, HeroCharacter, HeroClass } from '@/models'
 
 export function getAvailableBiomes(): Biome[] {
-  return [{
-    id: '1',
-    name: 'snow',
-    description: 'very cold',
-    startingLevel: 1,
-  },
+  return [
+    {
+      id: '1',
+      name: 'snow',
+      description: 'very cold',
+      startingLevel: 1,
+      baseGold: 10,
+    },
     {
       id: '2',
       name: 'Hideout',
       description: 'humanoid fun',
       startingLevel: 3,
+      baseGold: 20,
     },
     {
       id: '3',
       name: 'Swamp',
       description: 'swamp ass',
       startingLevel: 5,
+      baseGold: 30,
     },
     {
       id: '4',
       name: 'portal',
       description: 'portal realm - dangerous',
       startingLevel: 10,
+      baseGold: 50,
     },
   ]
 }
@@ -34,7 +39,7 @@ export function getAvailableDifficulties(): DifficultySetting[] {
       id: 1,
       name: 'Easy',
       description: 'a walk in the park',
-      levelModifier: 0.75,
+      levelModifier: -1,
       goldModifier: 0.75,
       lootModifier: 0.75,
       experienceModifier: 0.75,
@@ -44,7 +49,7 @@ export function getAvailableDifficulties(): DifficultySetting[] {
       id: 2,
       name: 'Normal',
       description: 'Average challenge',
-      levelModifier: 1,
+      levelModifier: 0,
       goldModifier: 1,
       lootModifier: 1,
       experienceModifier: 1,
@@ -54,7 +59,7 @@ export function getAvailableDifficulties(): DifficultySetting[] {
       id: 3,
       name: 'Challenging',
       description: 'not for the feint of heart',
-      levelModifier: 1.25,
+      levelModifier: 4,
       goldModifier: 1.25,
       lootModifier: 1.25,
       experienceModifier: 1.25,
@@ -64,7 +69,7 @@ export function getAvailableDifficulties(): DifficultySetting[] {
       id: 4,
       name: 'Mania',
       description: 'You will likely die, but what if...',
-      levelModifier: 2,
+      levelModifier: 8,
       goldModifier: 2,
       lootModifier: 2,
       experienceModifier: 2,
@@ -128,7 +133,7 @@ export function getStartingHeroes(): HeroCharacter[] {
       class: HeroClass.Fighter,
       strength: 4,
       hitPoints: 20,
-      level: 5,
+      level: 2,
     },
     {
       ...base,
@@ -136,7 +141,7 @@ export function getStartingHeroes(): HeroCharacter[] {
       characterName: 'Argus',
       class: HeroClass.Rogue,
       dexterity: 4,
-      level: 5,
+      level: 3,
     },
     {
       ...base,
@@ -145,7 +150,7 @@ export function getStartingHeroes(): HeroCharacter[] {
       class: HeroClass.Cleric,
       intelligence: 4,
       hitPoints: 16,
-      level: 5,
+      level: 3,
     },
     {
       ...base,
@@ -154,7 +159,7 @@ export function getStartingHeroes(): HeroCharacter[] {
       class: HeroClass.Wizard,
       intelligence: 4,
       hitPoints: 12,
-      level: 5,
+      level: 4,
     },
   ]
 }

@@ -3,6 +3,7 @@ export type Biome = {
   name: string
   description: string
   startingLevel: number
+  baseGold: number
   imgUrl?: string
 }
 
