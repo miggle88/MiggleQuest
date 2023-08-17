@@ -1,5 +1,6 @@
 import { Biome } from '@/models'
 import { text } from 'stream/consumers'
+import Conditional from '@components/layout/Conditional'
 
 export interface BiomeCardProps {
   biome: Biome
@@ -23,6 +24,8 @@ export default function BiomeCard(props: BiomeCardProps) {
     props.disabled ? 'text-red-400'
       : props.selected ? 'text-amber-500' : 'text-white'
 
+  const goldColor = props.disabled ? 'text-red-400' : 'text-yellow-300'
+
   const cursor = props.disabled ? 'cursor-not-allowed' : ''
 
   return (
@@ -35,6 +38,11 @@ export default function BiomeCard(props: BiomeCardProps) {
           <div className={'text-xl'}>{biome.description}</div>
           <div className={'py-2'}/>
           <div><span className={'font-bold'}>Level Req: </span>{biome.startingLevel}+</div>
+          <div className={`text-center font-bold p-2 ${goldColor}`}>Gold: {biome.baseGold}</div>
+          <Conditional condition={props.disabled ?? false}>
+            <div className={'py-2'}/>
+            <div>You have no available heroes within the level range</div>
+          </Conditional>
         </div>
       </button>
     </div>

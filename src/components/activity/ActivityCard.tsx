@@ -6,9 +6,11 @@ import { toTitleCase } from '@/utils/strings'
 import HeroBorder from '@components/common/HeroBorder'
 import ProgressBar from '@components/common/ProgressBar'
 import { differenceInSeconds } from 'date-fns'
+import Conditional from '@components/layout/Conditional'
 
 export interface ActivityCardProps {
   activity: Activity
+  onClaim?: () => void
 }
 
 export default function ActivityCard(props: ActivityCardProps) {
@@ -17,6 +19,7 @@ export default function ActivityCard(props: ActivityCardProps) {
 
   const { activity } = props
   const { biome, difficulty, party } = activity
+  const canBeClaimed = activity.completedAt <= new Date() && !activity.claimedAt
 
   const updateProgress = () => {
     const now = new Date()
@@ -47,14 +50,26 @@ export default function ActivityCard(props: ActivityCardProps) {
   return (
     <div className={'border-2 border-neutral-500 p-2'}>
       <div className={'flex flex-col'}>
-        <ProgressBar percent={percent}
-                     bgColor={'bg-green-950'}
-                     borderColor={'border-green-400'}
-                     fillColor={remainingSeconds > 0 ? 'bg-green-700' : 'bg-green-950'}>
-          <div className={'text-center text-lg px-2 py-1'}>
-            {remainingSeconds > 0 ? formatRemainingTime(remainingSeconds) : 'Completed'}
-          </div>
-        </ProgressBar>
+        <Conditional condition={!canBeClaimed}>
+          <ProgressBar percent={percent}
+                       bgColor={'bg-green-950'}
+                       borderColor={'border-green-400'}
+                       fillColor={remainingSeconds > 0 ? 'bg-green-700' : 'bg-green-950'}>
+            <div className={'text-center text-lg px-2 py-1'}>
+              {remainingSeconds > 0 ? formatRemainingTime(remainingSeconds) : 'Completed'}
+            </div>
+          </ProgressBar>
+        </Conditional>
+        <Conditional condition={canBeClaimed}>
+          <button
+            disabled={!canBeClaimed}
+            onClick={() => props.onClaim && props.onClaim()}
+            className={'border-2 rounded border-indigo-400 h-full hover:bg-neutral-800 bg-neutral-900 active:bg-neutral-700 p-2'}>
+            <span className={'text-xl'}>Claim
+            your
+              rewards!</span>
+          </button>
+        </Conditional>
         <div className={'py-2'}/>
         <div className={'grid grid-cols-1 sm:grid-cols-3 px-2'}>
           <div
