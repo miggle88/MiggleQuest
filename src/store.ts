@@ -7,6 +7,7 @@ export interface GameState {
   setUser: (user: UserAccount | null) => void
   userCurrency: UserCurrency | null
   setUserCurrency: (currencies: UserCurrency) => void
+  incrementUserGold: (amount: number) => void
   heroes: HeroCharacter[]
   getAvailableHeroes: (minLevel?: number) => HeroCharacter[]
   setHeroes: (heroes: HeroCharacter[]) => void
@@ -29,8 +30,14 @@ export interface GameState {
 export const useGameState = create<GameState>((set, get) => ({
   user: null,
   setUser: (user) => set({ user }),
-  userCurrency: null,
+  userCurrency: { id: '1', accountId: '1', gold: 0 },
   setUserCurrency: (currency) => set({ userCurrency: currency }),
+  incrementUserGold: (amount) => set(state => ({
+    userCurrency: state.userCurrency ? {
+      ...state.userCurrency,
+      gold: state.userCurrency.gold + amount,
+    } : null,
+  })),
   heroes: getStartingHeroes(),
   getAvailableHeroes: (minLevel = 1) =>
     get().heroes.filter(hero => !hero.isDead && hero.level >= minLevel && (!hero.nextAvailableAt || hero.nextAvailableAt <= new Date())),

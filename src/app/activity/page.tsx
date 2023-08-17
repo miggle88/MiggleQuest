@@ -18,7 +18,7 @@ export default function Activity() {
   const [party, setParty] = useState<HeroCharacter[]>([])
   const [levelUpIds, setLevelUpIds] = useState<string[]>([])
 
-  const { activities, removeActivity } = useGameState()
+  const { activities, removeActivity, incrementUserGold } = useGameState()
 
 
   const sortedActivities = [...activities].sort(activitySorter)
@@ -28,6 +28,7 @@ export default function Activity() {
     }
 
     const exp = calcExperienceReward(activity)
+    const gold = calcGoldReward(activity)
 
     const ids: string[] = []
     for (const hero of activity.party) {
@@ -41,8 +42,10 @@ export default function Activity() {
       }
     }
 
+    incrementUserGold(gold)
+
     setExpReward(exp)
-    setGoldReward(calcGoldReward(activity))
+    setGoldReward(gold)
     setParty(activity.party)
     setLevelUpIds(ids)
     setShowRewardsModal(true)

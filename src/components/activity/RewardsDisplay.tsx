@@ -47,7 +47,7 @@ export default function RewardsDisplay(props: RewardsDisplayProps) {
           })}
         </div>
         <div className={'py-2'}/>
-        <button className={'border-2 border-neutral-500 hover:bg-neutral-700 active:bg-neutral-600 px-6 py-2'}
+        <button className={'border-2 border-neutral-500 hover:bg-neutral-800 active:bg-neutral-700 px-6 py-2'}
                 onClick={() => props.onClose && props.onClose()}>Ok!
         </button>
       </div>
